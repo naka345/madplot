@@ -19,7 +19,7 @@ class ReadConfig:
         return config_dict
 
     @staticmethod
-    def config_validate(config_dict):
+    def figure_config_validate(config_dict):
         valid_dict={k:None for k in config_dict.keys()}
         try:
             valid_dict["figsize_w"] = float(config_dict["figsize_w"])
@@ -38,9 +38,31 @@ class ReadConfig:
             print(e)
         return valid_dict
 
+    @staticmethod
+    def axies_config_validate(config_dict):
+        valid_dict={k:None for k in config_dict.keys()}
+        try:
+            valid_dict["xlabel"] = str(config_dict["xlabel"])
+            valid_dict["ylabel"] = str(config_dict["ylabel"])
+            valid_dict["title"] = str(config_dict["title"])
+            valid_dict["set_xscale"] = str(config_dict["set_xscale"])
+            valid_dict["marker"] = str(config_dict["marker"])
+            valid_dict["ticker"] = str(config_dict["ticker"])
+        except Exception as e:
+            print(e)
+
+        return valid_dict
+
 if __name__ == "__main__":
-    path = "../config/figure_config.csv"
-    rc = ReadConfig(path)
-    dict_csv = rc.config_read()
-    val_dict = ReadConfig.config_validate(dict_csv)
-    print(val_dict)
+    figure_config_path = "./config/figure_config_template.csv"
+
+    figure_config = ReadConfig(figure_config_path)
+    figure_csv = figure_config.config_read()
+    figure_dict = ReadConfig.figure_config_validate(figure_csv)
+    print(figure_dict)
+
+    axies_config_path = "./config/axies_config_template.csv"
+    axies_config = ReadConfig(axies_config_path)
+    axies_csv = axies_config.config_read()
+    axies_dict = ReadConfig.axies_config_validate(axies_csv)
+    print(axies_dict)
