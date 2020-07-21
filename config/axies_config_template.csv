@@ -1,0 +1,7 @@
+xlabel,Hours post infection
+ylabel,Virus titer (log10 PFU/mL)
+title,test
+set_xscale,
+set_yscale,log
+marker,o
+ticker,LogFormatterExponent
