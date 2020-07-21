@@ -1,0 +1,14 @@
+xlabel,Hours
+ylabel,Growth
+title,test
+linewidth,1.0
+linestyle,solid
+xscale,
+yscale,log
+marker,o
+ticker,LogFormatterExponent
+err_bar,True
+legend,True
+bbox_to_anchor_x,1.0
+bbox_to_anchor_y,1.0
+bbox_loc,upper left
