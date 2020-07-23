@@ -56,32 +56,12 @@ class ReadConfig:
             valid_dict["linestyle"] = str(config_dict["linestyle"])
             valid_dict["marker"] = str(config_dict["marker"])
             valid_dict["ticker"] = str(config_dict["ticker"])
-
             valid_dict["legend"] = bool(config_dict["legend"])
-
-            if valid_dict["legend"]:
-                valid_dict = ReadConfig.legend_config_validate(config_dict, valid_dict)
-            else:
-                valid_dict.pop("bbox_to_anchor_x")
-                valid_dict.pop("bbox_to_anchor_y")
-                valid_dict.pop("bbox_loc")
 
         except KeyError as keyerr:
             print(keyerr)
         except Exception as e:
             print(e)
-
-        return valid_dict
-
-
-    @staticmethod
-    def legend_config_validate(config_dict, valid_dict):
-        valid_dict["bbox_to_anchor_x"] = float(config_dict["bbox_to_anchor_x"])
-        valid_dict["bbox_to_anchor_y"] = float(config_dict["bbox_to_anchor_y"])
-        valid_dict["bbox_loc"] = str(config_dict["bbox_loc"])
-        valid_dict.update({"bbox_to_anchor":(valid_dict["bbox_to_anchor_x"],valid_dict["bbox_to_anchor_y"])})
-        valid_dict.pop("bbox_to_anchor_x")
-        valid_dict.pop("bbox_to_anchor_y")
 
         return valid_dict
 
