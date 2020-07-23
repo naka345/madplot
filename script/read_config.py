@@ -7,10 +7,10 @@ class ReadConfig:
         try:
             if os.path.isfile(path) is False:
                 raise OSError(2, 'No such file or directory', path)
-
-            self.config_path = path
         except OSError as err:
             print(err)
+
+        self.config_path = path
 
     def config_read(self):
         with open(self.config_path) as f:
@@ -33,7 +33,11 @@ class ReadConfig:
 
             if "figsize_w" in valid_dict and "figsize_h" in valid_dict:
                 valid_dict["figsize"] = (valid_dict["figsize_w"],valid_dict["figsize_h"])
+            valid_dict.pop("figsize_w")
+            valid_dict.pop("figsize_h")
 
+        except KeyError as keyerr:
+            print(keyerr)
         except Exception as e:
             print(e)
         return valid_dict
@@ -41,17 +45,49 @@ class ReadConfig:
     @staticmethod
     def axies_config_validate(config_dict):
         valid_dict={k:None for k in config_dict.keys()}
+        print(config_dict)
         try:
             valid_dict["xlabel"] = str(config_dict["xlabel"])
             valid_dict["ylabel"] = str(config_dict["ylabel"])
             valid_dict["title"] = str(config_dict["title"])
-            valid_dict["set_xscale"] = str(config_dict["set_xscale"])
+            valid_dict["xscale"] = str(config_dict["xscale"]) if config_dict["xscale"] else "linear"
+            valid_dict["yscale"] = str(config_dict["yscale"]) if config_dict["yscale"] else "linear"
+            valid_dict["linewidth"] = float(config_dict["linewidth"])
+            valid_dict["linestyle"] = str(config_dict["linestyle"])
             valid_dict["marker"] = str(config_dict["marker"])
             valid_dict["ticker"] = str(config_dict["ticker"])
+
+            valid_dict["legend"] = bool(config_dict["legend"])
+
+            if valid_dict["legend"]:
+                valid_dict = ReadConfig.legend_config_validate(config_dict, valid_dict)
+            else:
+                valid_dict.pop("bbox_to_anchor_x")
+                valid_dict.pop("bbox_to_anchor_y")
+                valid_dict.pop("bbox_loc")
+
+        except KeyError as keyerr:
+            print(keyerr)
         except Exception as e:
             print(e)
 
         return valid_dict
+
+
+    @staticmethod
+    def legend_config_validate(config_dict, valid_dict):
+        valid_dict["bbox_to_anchor_x"] = float(config_dict["bbox_to_anchor_x"])
+        valid_dict["bbox_to_anchor_y"] = float(config_dict["bbox_to_anchor_y"])
+        valid_dict["bbox_loc"] = str(config_dict["bbox_loc"])
+        valid_dict.update({"bbox_to_anchor":(valid_dict["bbox_to_anchor_x"],valid_dict["bbox_to_anchor_y"])})
+        valid_dict.pop("bbox_to_anchor_x")
+        valid_dict.pop("bbox_to_anchor_y")
+
+        return valid_dict
+
+    @staticmethod
+    def errbar_config_validate(config_dict):
+        valid_dict={k:None for k in config_dict.keys()}
 
 if __name__ == "__main__":
     figure_config_path = "./config/figure_config_template.csv"
