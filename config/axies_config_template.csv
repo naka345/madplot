@@ -5,7 +5,6 @@ linewidth,1.0
 linestyle,solid
 xscale,
 yscale,log
-marker,o
 ticker,LogFormatterExponent
 err_bar,True
 legend,True
