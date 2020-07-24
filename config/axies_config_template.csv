@@ -1,10 +1,7 @@
 xlabel,Hours
 ylabel,Growth
 title,test
-linewidth,1.0
-linestyle,solid
 xscale,linear
 yscale,log
-marker,o
 ticker,LogFormatterExponent
 legend,True
