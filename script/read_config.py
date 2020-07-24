@@ -52,7 +52,6 @@ class ReadConfig:
             valid_dict["title"] = str(config_dict["title"])
             valid_dict["xscale"] = str(config_dict["xscale"]) if config_dict["xscale"] else "linear"
             valid_dict["yscale"] = str(config_dict["yscale"]) if config_dict["yscale"] else "linear"
-            valid_dict["linewidth"] = float(config_dict["linewidth"])
             valid_dict["linestyle"] = str(config_dict["linestyle"])
             valid_dict["marker"] = str(config_dict["marker"])
             valid_dict["ticker"] = str(config_dict["ticker"])
@@ -68,10 +67,22 @@ class ReadConfig:
     @staticmethod
     def errbar_config_validate(config_dict):
         valid_dict={k:None for k in config_dict.keys()}
+        try:
+            valid_dict["elinewidth"] = float(config_dict["elinewidth"])
+            valid_dict["ecolor"] = str(config_dict["ecolor"])
+            valid_dict["capsize"] = float(config_dict["capsize"])
+            valid_dict["capthick"] = float(config_dict["capthick"])
+            valid_dict["barsabove"] = bool(config_dict["barsabove"])
+
+        except KeyError as keyerr:
+            print(keyerr)
+        except Exception as e:
+            print(e)
+
+        return valid_dict
 
 if __name__ == "__main__":
     figure_config_path = "./config/figure_config_template.csv"
-
     figure_config = ReadConfig(figure_config_path)
     figure_csv = figure_config.config_read()
     figure_dict = ReadConfig.figure_config_validate(figure_csv)
@@ -82,3 +93,9 @@ if __name__ == "__main__":
     axies_csv = axies_config.config_read()
     axies_dict = ReadConfig.axies_config_validate(axies_csv)
     print(axies_dict)
+
+    errbar_config_path = "./config/errbar_config_template.csv"
+    errbar_config = ReadConfig(errbar_config_path)
+    errbar_csv = errbar_config.config_read()
+    errbar_dict = ReadConfig.errbar_config_validate(errbar_csv)
+    print(errbar_dict)
