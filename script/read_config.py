@@ -1,6 +1,7 @@
 import csv
 import os
 import sys
+import yaml
 
 class ReadConfig:
     def __init__(self, path):
@@ -12,90 +13,33 @@ class ReadConfig:
 
         self.config_path = path
 
-    def config_read(self):
+    def csv_config_read(self):
         with open(self.config_path) as f:
             read_line = csv.reader(f)
             config_dict = {line[0]:line[1] for line in read_line}
         return config_dict
 
-    @staticmethod
-    def figure_config_validate(config_dict):
-        valid_dict={k:None for k in config_dict.keys()}
+    def yaml_config_read(self):
         try:
-            valid_dict["figsize_w"] = float(config_dict["figsize_w"])
-            valid_dict["figsize_h"] = float(config_dict["figsize_h"])
-            valid_dict["dpi"] = int(config_dict["dpi"])
-            valid_dict["facecolor"] = str(config_dict["facecolor"])
-            valid_dict["linewidth"] = int(config_dict["linewidth"])
-            valid_dict["edgecolor"] = str(config_dict["edgecolor"])
-            valid_dict["tight_layout"] = bool(config_dict["tight_layout"])
-            valid_dict["constrained_layout"] = bool(config_dict["constrained_layout"])
-
-            if "figsize_w" in valid_dict and "figsize_h" in valid_dict:
-                valid_dict["figsize"] = (valid_dict["figsize_w"],valid_dict["figsize_h"])
-            valid_dict.pop("figsize_w")
-            valid_dict.pop("figsize_h")
-
-        except KeyError as keyerr:
-            print(keyerr)
+            with open(self.config_path) as f:
+                read_file = yaml.safe_load(f)
+            return read_file
         except Exception as e:
             print(e)
-        return valid_dict
+            print("Please check your yaml file")
 
-    @staticmethod
-    def axies_config_validate(config_dict):
-        valid_dict={k:None for k in config_dict.keys()}
-        print(config_dict)
-        try:
-            valid_dict["xlabel"] = str(config_dict["xlabel"])
-            valid_dict["ylabel"] = str(config_dict["ylabel"])
-            valid_dict["title"] = str(config_dict["title"])
-            valid_dict["xscale"] = str(config_dict["xscale"]) if config_dict["xscale"] else "linear"
-            valid_dict["yscale"] = str(config_dict["yscale"]) if config_dict["yscale"] else "linear"
-            valid_dict["linestyle"] = str(config_dict["linestyle"])
-            valid_dict["marker"] = str(config_dict["marker"])
-            valid_dict["ticker"] = str(config_dict["ticker"])
-            valid_dict["legend"] = bool(config_dict["legend"])
-
-        except KeyError as keyerr:
-            print(keyerr)
-        except Exception as e:
-            print(e)
-
-        return valid_dict
-
-    @staticmethod
-    def errbar_config_validate(config_dict):
-        valid_dict={k:None for k in config_dict.keys()}
-        try:
-            valid_dict["elinewidth"] = float(config_dict["elinewidth"])
-            valid_dict["ecolor"] = str(config_dict["ecolor"])
-            valid_dict["capsize"] = float(config_dict["capsize"])
-            valid_dict["capthick"] = float(config_dict["capthick"])
-            valid_dict["barsabove"] = bool(config_dict["barsabove"])
-
-        except KeyError as keyerr:
-            print(keyerr)
-        except Exception as e:
-            print(e)
-
-        return valid_dict
+    def separate_rcParams(self, read_file):
+        rcParams_dict = {}
+        for k in read_file.keys():
+            if "rcParams" in read_file[k]:
+                rcParams_dict = {**rcParams_dict, **read_file[k]["rcParams"]}
+                read_file[k].pop("rcParams")
+        return read_file, rcParams_dict
 
 if __name__ == "__main__":
-    figure_config_path = "./config/figure_config_template.csv"
-    figure_config = ReadConfig(figure_config_path)
-    figure_csv = figure_config.config_read()
-    figure_dict = ReadConfig.figure_config_validate(figure_csv)
-    print(figure_dict)
-
-    axies_config_path = "./config/axies_config_template.csv"
-    axies_config = ReadConfig(axies_config_path)
-    axies_csv = axies_config.config_read()
-    axies_dict = ReadConfig.axies_config_validate(axies_csv)
-    print(axies_dict)
-
-    errbar_config_path = "./config/errbar_config_template.csv"
-    errbar_config = ReadConfig(errbar_config_path)
-    errbar_csv = errbar_config.config_read()
-    errbar_dict = ReadConfig.errbar_config_validate(errbar_csv)
-    print(errbar_dict)
+    config_path = "./config/config.yml"
+    config = ReadConfig(config_path)
+    read_yaml = config.yaml_config_read()
+    read_yaml, rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
+    print(f"read_yaml: {read_yaml}")
+    print(f"rcParams_dict: {rcParams_dict}")
