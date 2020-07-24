@@ -6,9 +6,11 @@ import pandas as pd
 import math
 
 class Plot:
-    def __init__(self, figure_config, axies_config):
+    def __init__(self, figure_config, axies_config, errbar_config=None):
         self.figure_config = figure_config
+        self.ticker = axies_config.pop("ticker") if "ticker" in axies_config else None
         self.axies_config = axies_config
+        self.errbar_config = errbar_config
 
     @staticmethod
     def read_csv(path):
@@ -30,19 +32,35 @@ class Plot:
     def init_figure(self):
         self.fig = plt.figure(**self.figure_config)
 
+    def init_axes(self):
+        plt.rcParams[]
+
+    def init_errbar(self,std_err_df):
+        errbar_config = {"yerr":std_err_df}
+        if self.errbar_config is not None:
+            self.errbar_config = {**errbar_config, **self.errbar_config}
+
+
     def main_plot(self, csv_df, std_err_df=None):
         ax = self.fig.add_subplot(1, 1, 1)
 
+        plot_config = self.axies_config
         if std_err_df is not None:
-            ax_subplot = csv_df.T.plot(yerr=std_err_df ,ax=ax,marker='o')
-            ax_subplot.set_xscale(self.axies_config["xscale"])
-            ax_subplot.set_yscale(self.axies_config["yscale"])
-            log_format = eval(f'ticker.{self.axies_config["ticker"]}')()
+            self.init_errbar(std_err_df)
+
+
+        print("============")
+        print(plot_config)
+        ax_subplot = csv_df.plot(ax=ax,**errbar_config)
+        #ax_subplot.set_xscale(self.axies_config["xscale"])
+        #ax_subplot.set_yscale(self.axies_config["yscale"])
+        if self.ticker is not None:
+            log_format = eval(f'ticker.{self.ticker}')()
             ax_subplot.get_yaxis().set_major_formatter(log_format)
 
-        ax_subplot.set_ylabel(self.axies_config["ylabel"])
-        ax_subplot.set_xlabel(self.axies_config["xlabel"])
-        ax_subplot.set_title(self.axies_config["title"])
+        #ax_subplot.set_ylabel(self.axies_config["ylabel"])
+        #ax_subplot.set_xlabel(self.axies_config["xlabel"])
+        #ax_subplot.set_title(self.axies_config["title"])
 
     def figure_save(self,path):
         self.fig.savefig(path)

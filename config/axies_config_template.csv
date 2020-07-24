@@ -1,7 +1,0 @@
-xlabel,Hours
-ylabel,Growth
-title,test
-xscale,linear
-yscale,log
-ticker,LogFormatterExponent
-legend,True
