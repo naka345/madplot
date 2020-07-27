@@ -34,3 +34,6 @@ legend:
 axis:
   xlabel: Hours
   ylabel: Growth
+output:
+  filename: output
+  extension: png
