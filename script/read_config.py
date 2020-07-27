@@ -28,7 +28,8 @@ class ReadConfig:
             print(e)
             print("Please check your yaml file")
 
-    def separate_rcParams(self, read_file):
+    @staticmethod
+    def separate_rcParams(read_file):
         rcParams_dict = {}
         for k in read_file.keys():
             if "rcParams" in read_file[k]:
