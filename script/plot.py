@@ -6,9 +6,9 @@ import pandas as pd
 import math
 
 class Plot:
-    def __init__(self, figure_config, axies_config):
-        self.figure_config = figure_config
-        self.axies_config = axies_config
+    def __init__(self, read_yaml, rcParams_dict):
+        self.figure_config = read_yaml
+        self.rcParams = rcParams_dict
 
     @staticmethod
     def read_csv(path):
@@ -28,21 +28,47 @@ class Plot:
         return std_err_df
 
     def init_figure(self):
-        self.fig = plt.figure(**self.figure_config)
+        plt.style.use(self.rcParams)
+        plt_option = self.figure_config["figure"]
+        self.fig = plt.figure(**plt_option)
 
-    def main_plot(self, csv_df, std_err_df=None):
-        ax = self.fig.add_subplot(1, 1, 1)
+    def get_line_option(self):
+         return self.figure_config["lines"]
 
-        if std_err_df is not None:
-            ax_subplot = csv_df.T.plot(yerr=std_err_df ,ax=ax,marker='o')
-            ax_subplot.set_xscale(self.axies_config["xscale"])
-            ax_subplot.set_yscale(self.axies_config["yscale"])
-            log_format = eval(f'ticker.{self.axies_config["ticker"]}')()
-            ax_subplot.get_yaxis().set_major_formatter(log_format)
+    def get_legend_option(self):
+        return self.figure_config["legend"]
 
-        ax_subplot.set_ylabel(self.axies_config["ylabel"])
-        ax_subplot.set_xlabel(self.axies_config["xlabel"])
-        ax_subplot.set_title(self.axies_config["title"])
+    def get_errbar_option(self,std_err_df):
+        errbar_config = {"yerr":std_err_df}
+        if "errbar" in self.figure_config:
+            errbar_config = {**errbar_config, **self.figure_config["errbar"]}
+        return errbar_config
+
+    def set_axes_config(self):
+        axes_config = self.figure_config["axes"]
+        print(axes_config)
+        self.ax.set_title(axes_config["title"])
+        self.ax.set_xscale(axes_config["scale"]["xscale"])
+        self.ax.set_yscale(axes_config["scale"]["yscale"])
+        log_format = eval(f'ticker.{axes_config["scale"]["ticker"]}')()
+        self.ax.get_yaxis().set_major_formatter(log_format)
+
+    def set_label_name(self):
+        axis_config = self.figure_config["axis"]
+        self.ax.set_xlabel(axis_config["xlabel"])
+        self.ax.set_ylabel(axis_config["ylabel"])
+
+    def main_df_plot(self, csv_df, std_err_df=None):
+        self.ax = self.fig.add_subplot(1, 1, 1)
+
+        errbar_option = self.get_errbar_option(std_err_df) if std_err_df is not None else {}
+        legend_option = self.get_legend_option()
+        get_line_option = self.get_line_option()
+
+        karg_option = {**errbar_option, **legend_option, **get_line_option}
+        ax_subplot = csv_df.plot(ax=self.ax,**karg_option)
+
+        return ax_subplot
 
     def figure_save(self,path):
         self.fig.savefig(path)

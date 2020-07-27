@@ -1,7 +1,0 @@
-xlabel,Hours post infection
-ylabel,Virus titer (log10 PFU/mL)
-title,test
-xscale,linear
-yscale,log
-ticker,LogFormatterExponent
-legend,True
