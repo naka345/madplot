@@ -8,7 +8,7 @@ class Main:
     def __init__(self):
         pass
 
-    def read_yaml_config(self, path="./config/config.yml"):
+    def read_yaml_config(self, path="./config/config_template.yml"):
         config = ReadConfig(path)
         read_yaml = config.yaml_config_read()
         read_yaml, rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
