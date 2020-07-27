@@ -30,7 +30,7 @@ errbar:
   capthick: 1.0
   barsabove: False
 legend:
-  plot: True
+  legend: True
 axis:
   xlabel: Hours
   ylabel: Growth
