@@ -34,3 +34,6 @@ legend:
 axis:
   xlabel: Hours post infection
   ylabel: Virus titer (log10 PFU/mL)
+output:
+  filename: output
+  extension: png
