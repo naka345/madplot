@@ -31,4 +31,4 @@ if __name__ == "__main__":
     plt_class.set_label_name()
 
     plt_class.figure_show()
-    plt_class.figure_save("./output/save.png")
+    plt_class.figure_save()
