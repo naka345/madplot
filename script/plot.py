@@ -73,7 +73,7 @@ class Plot:
 
     def remove_axes(self,ax):
         self.fig.delaxes(ax)
-        
+
     def figure_save(self,path=None):
         if path is not None:
             self.fig.savefig(path)
