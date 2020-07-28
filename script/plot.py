@@ -15,7 +15,8 @@ class Plot:
         return pd.read_csv(path,header=0,index_col=0)
 
     @staticmethod
-    def std_err_df(df_list):
+    def std_err_df(df_dict):
+        df_list = [df for df in df_dict.values()]
         append_dict={index:{} for index, df in df_list[0].iterrows()}
 
         for i,df in enumerate(df_list):
@@ -70,12 +71,14 @@ class Plot:
 
         return ax_subplot
 
+    def remove_axes(self,ax):
+        self.fig.delaxes(ax)
+
     def figure_save(self,path=None):
         if path is not None:
             self.fig.savefig(path)
         else:
             file_path = f'{self.figure_config["output"]["filename"]}.{self.figure_config["output"]["extension"]}'
             self.fig.savefig(file_path)
-
     def figure_show(self):
         self.fig.show()
