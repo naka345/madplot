@@ -41,11 +41,13 @@ if __name__ == "__main__":
     df_dict = {k:Plot.read_csv(v) for k,v in files_dict.items()}
 
     std_err = Plot.std_err_df(df_dict)
-    plot_df = Plot.read_csv(file_list[0])
-    print("here")
-    subplot_ax = plt_class.main_df_plot(plot_df.T, std_err_df=std_err)
-    plt_class.set_axes_config()
-    plt_class.set_label_name()
 
-    plt_class.figure_show()
-    plt_class.figure_save()
+    for csv_name, df in df_dict.items():
+        print("here")
+        subplot_ax = main.plt_class.main_df_plot(df.T, std_err_df=std_err)
+        main.plt_class.set_axes_config()
+        main.plt_class.set_label_name()
+
+        # main.plt_class.figure_show()
+        main.plt_class.figure_save(f"./output/{csv_name}.png")
+        main.plt_class.remove_axes(subplot_ax)
