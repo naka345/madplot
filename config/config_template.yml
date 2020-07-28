@@ -1,3 +1,6 @@
+datafile:
+  filedir: example_data
+  files: '*.csv'
 figure:
   rcParams:
     figure.figsize: 6.4, 4.8
