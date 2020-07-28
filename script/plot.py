@@ -15,7 +15,8 @@ class Plot:
         return pd.read_csv(path,header=0,index_col=0)
 
     @staticmethod
-    def std_err_df(df_list):
+    def std_err_df(df_dict):
+        df_list = [df for df in df_dict.values()]
         append_dict={index:{} for index, df in df_list[0].iterrows()}
 
         for i,df in enumerate(df_list):
