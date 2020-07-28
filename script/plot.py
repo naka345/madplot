@@ -9,6 +9,7 @@ class Plot:
     def __init__(self, read_yaml, rcParams_dict):
         self.figure_config = read_yaml
         self.rcParams = rcParams_dict
+        self.file_count = 0
 
     @staticmethod
     def read_csv(path):
@@ -80,15 +81,20 @@ class Plot:
     def figure_save(self,path=None):
         output_dir = self.figure_config["output"]["dir"]
         ext = self.figure_config["output"]["extension"]
+
         if path is not None:
             self.fig.savefig(path)
-        elif self.figure_config["output"]["title"]["specific"] == False and hasattr(self, "csv_title"):
+        elif self.figure_config["output"]["title"]["specific"] is False and hasattr(self, "csv_title"):
             file_path = f"{output_dir}/{self.csv_title}.{ext}"
             self.fig.savefig(file_path)
         else:
             file_name = self.figure_config["output"]["title"]["filename"]
-            file_path = f"{output_dir}/{file_name}.{ext}"
+            if self.file_count == 0:
+                file_path = f"{output_dir}/{file_name}.{ext}"
+            else:
+                file_path = f"{output_dir}/{file_name}_{self.file_count}.{ext}"
             self.fig.savefig(file_path)
+            self.file_count += 1
 
     def figure_show(self):
         self.fig.show()
