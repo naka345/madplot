@@ -42,6 +42,6 @@ axis:
 output:
   dir: output
   title:
-    specific: False
+    specific: True
     filename: same_input_filename
   extension: png

@@ -49,5 +49,5 @@ if __name__ == "__main__":
         main.plt_class.set_label_name()
 
         # main.plt_class.figure_show()
-        main.plt_class.figure_save(f"./output/{csv_name}.png")
+        main.plt_class.figure_save()
         main.plt_class.remove_axes(subplot_ax)
