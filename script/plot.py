@@ -9,6 +9,7 @@ class Plot:
     def __init__(self, read_yaml, rcParams_dict):
         self.figure_config = read_yaml
         self.rcParams = rcParams_dict
+        self.file_count = 0
 
     @staticmethod
     def read_csv(path):
@@ -45,10 +46,13 @@ class Plot:
             errbar_config = {**errbar_config, **self.figure_config["errbar"]}
         return errbar_config
 
-    def set_axes_config(self):
+    def set_axes_config(self, **kargs):
         axes_config = self.figure_config["axes"]
-        print(axes_config)
-        self.ax.set_title(axes_config["title"])
+        if "title" in kargs and axes_config["title"]["specific"] is False:
+            self.csv_title = kargs["title"]
+            self.ax.set_title(self.csv_title)
+        else:
+            self.ax.set_title(axes_config["title"]["name"])
         self.ax.set_xscale(axes_config["scale"]["xscale"])
         self.ax.set_yscale(axes_config["scale"]["yscale"])
         log_format = eval(f'ticker.{axes_config["scale"]["ticker"]}')()
@@ -75,10 +79,22 @@ class Plot:
         self.fig.delaxes(ax)
 
     def figure_save(self,path=None):
+        output_dir = self.figure_config["output"]["dir"]
+        ext = self.figure_config["output"]["extension"]
+
         if path is not None:
             self.fig.savefig(path)
-        else:
-            file_path = f'{self.figure_config["output"]["filename"]}.{self.figure_config["output"]["extension"]}'
+        elif self.figure_config["output"]["title"]["specific"] is False and hasattr(self, "csv_title"):
+            file_path = f"{output_dir}/{self.csv_title}.{ext}"
             self.fig.savefig(file_path)
+        else:
+            file_name = self.figure_config["output"]["title"]["filename"]
+            if self.file_count == 0:
+                file_path = f"{output_dir}/{file_name}.{ext}"
+            else:
+                file_path = f"{output_dir}/{file_name}_{self.file_count}.{ext}"
+            self.fig.savefig(file_path)
+            self.file_count += 1
+
     def figure_show(self):
         self.fig.show()
