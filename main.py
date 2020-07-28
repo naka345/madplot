@@ -39,9 +39,8 @@ if __name__ == "__main__":
 
     files_dict = main.set_data_files()
     df_dict = {k:Plot.read_csv(v) for k,v in files_dict.items()}
-    print(df_dict)
 
-    std_err = Plot.std_err_df(df_list)
+    std_err = Plot.std_err_df(df_dict)
     plot_df = Plot.read_csv(file_list[0])
     print("here")
     subplot_ax = plt_class.main_df_plot(plot_df.T, std_err_df=std_err)
