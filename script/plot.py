@@ -71,12 +71,14 @@ class Plot:
 
         return ax_subplot
 
+    def remove_axes(self,ax):
+        self.fig.delaxes(ax)
+        
     def figure_save(self,path=None):
         if path is not None:
             self.fig.savefig(path)
         else:
             file_path = f'{self.figure_config["output"]["filename"]}.{self.figure_config["output"]["extension"]}'
             self.fig.savefig(file_path)
-
     def figure_show(self):
         self.fig.show()
