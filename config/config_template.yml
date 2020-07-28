@@ -13,7 +13,9 @@ font:
     font.family: Arial
     font.size: 10.0
 axes:
-  title: test
+  title:
+    specific: False
+    name: same_input_filename
   rcParams:
     axes.titlesize: large
     axes.titlecolor: auto
@@ -38,5 +40,8 @@ axis:
   xlabel: Hours
   ylabel: Growth
 output:
-  filename: output
+  dir: output
+  title:
+    specific: False
+    filename: same_input_filename
   extension: png
