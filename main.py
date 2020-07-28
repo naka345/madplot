@@ -1,28 +1,46 @@
 import csv
 import os
 import sys
+import glob
 from script.plot import Plot
 from script.read_config import ReadConfig
 
 class Main:
-    def __init__(self):
-        pass
+    def __init__(self, path="./config/config_template.yml"):
+        self.path = path
 
-    def read_yaml_config(self, path="./config/config_template.yml"):
-        config = ReadConfig(path)
+    def read_yaml_config(self):
+        config = ReadConfig(self.path)
         read_yaml = config.yaml_config_read()
-        read_yaml, rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
-        return read_yaml, rcParams_dict
+        self.read_config_dict, self.rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
+
+    def init_plot_configure(self):
+        self.plt_class = Plot(self.read_config_dict, self.rcParams_dict)
+        self.plt_class.init_figure()
+
+    def set_data_files(self):
+        file_list = self.read_config_dict["datafile"]["files"].split(",")
+        file_dir = self.read_config_dict["datafile"]["filedir"]
+
+        data_files_dict = {}
+        for fl in file_list:
+            if "*" in fl:
+                all_file_list = glob.glob(f'{file_dir}/{fl}')
+                all_file_dict = {file.split("/")[-1]:file for file in all_file_list}
+                data_files_dict = {**data_files_dict, **all_file_dict}
+            else:
+                data_files_dict.update({fl : f'{file_dir}/{fl}'})
+        return data_files_dict
 
 if __name__ == "__main__":
     main = Main()
-    read_config_dict, rcParams_dict = main.read_yaml_config()
+    main.read_yaml_config()
+    main.init_plot_configure()
 
-    plt_class = Plot(read_config_dict, rcParams_dict)
-    plt_class.init_figure()
+    files_dict = main.set_data_files()
+    df_dict = {k:Plot.read_csv(v) for k,v in files_dict.items()}
+    print(df_dict)
 
-    file_list = ["./example_data/H6-1.csv","./example_data/H6-2.csv","./example_data/H6-3.csv"]
-    df_list = [Plot.read_csv(file) for file in file_list]
     std_err = Plot.std_err_df(df_list)
     plot_df = Plot.read_csv(file_list[0])
     print("here")
