@@ -1,7 +1,9 @@
 # madplot
 yaml形式のファイルを読み込んでmatplotlibで作図するための自作スクリプト。
 
-**現段階ではcsv形式しかサポートしてません。** example_dataに存在するファイルを参考
+**現段階ではcsv形式しかサポートしてません。**
+
+example_dataに存在するファイルを参考
 
 # 使い方
 ## ダウンロード
@@ -31,7 +33,9 @@ pip install -r requirement.txt
 
 ## データファイルの設置
 csvファイルをyamlファイルで指定した場所に設置する。
+
 初期値だと`example_data`に置けば`output`に出力される。
+
 エラーバー出力のための偏差値の計算は、読み込みに指定したファイルで行う
 
 ## コマンド
@@ -56,6 +60,7 @@ python main.py madplot --std_err False
 
 # 設定ファイル
 config_template.ymlを元に説明。
+
 使用時はconfig_template.ymlからコピーし `--config_path` オプションを使用するのが望ましい。
 
 `rcParams`キー以下の設定値の詳細に関しては[公式のサンプル](https://matplotlib.org/tutorials/introductory/customizing.html#matplotlibrc-sample)を参考にされたし
@@ -115,6 +120,7 @@ output:
 
 ## rcParamsの追加変更
 [matplotlibrc](https://matplotlib.org/tutorials/introductory/customizing.html#matplotlibrc-sample)で変更できる項目に限り
+
 以下のようにyamlファイルを編集することで変更が可能。
 
 ```
