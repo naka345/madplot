@@ -1,0 +1,47 @@
+datafile:
+  filedir: example_data
+  files: '*.csv'
+figure:
+  rcParams:
+    figure.figsize: 6.4, 4.8
+    figure.dpi: 300
+    figure.facecolor: white
+    figure.edgecolor: white
+  linewidth: 0
+font:
+  rcParams:
+    font.family: Arial
+    font.size: 10.0
+axes:
+  title:
+    specific: False
+    name: same_input_filename
+  rcParams:
+    axes.titlesize: large
+    axes.titlecolor: auto
+  scale:
+    xscale: linear
+    yscale: log
+    ticker: LogFormatterExponent
+lines:
+  rcParams:
+    lines.marker: o
+    lines.linewidth: 1.0
+    lines.linestyle: solid
+errbar:
+  elinewidth: 0.5
+  ecolor: black
+  capsize: 4.0
+  capthick: 1.0
+  barsabove: False
+legend:
+  legend: True
+axis:
+  xlabel: Hours post infection
+  ylabel: Virus titer (log10 PFU/mL)
+output:
+  dir: output
+  title:
+    specific: False
+    filename: same_input_filename
+  extension: png
