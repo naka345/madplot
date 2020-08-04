@@ -40,7 +40,8 @@ class ReadConfig:
 
 
 if __name__ == "__main__":
-    config_path = "./config/config.yml"
+    root_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+    config_path = os.path.join(ROOT_PATH, "config", "config_template.yml")
     config = ReadConfig(config_path)
     read_yaml = config.yaml_config_read()
     read_yaml, rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
