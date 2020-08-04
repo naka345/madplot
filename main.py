@@ -6,6 +6,7 @@ import fire
 from script.plot import Plot
 from script.read_config import ReadConfig
 
+
 class Main:
     def __init__(self, path="./config/config_template.yml"):
         self.path = path
@@ -13,7 +14,9 @@ class Main:
     def read_yaml_config(self):
         config = ReadConfig(self.path)
         read_yaml = config.yaml_config_read()
-        self.read_config_dict, self.rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
+        self.read_config_dict, self.rcParams_dict = ReadConfig.separate_rcParams(
+            read_yaml
+        )
 
     def init_plot_configure(self):
         self.plt_class = Plot(self.read_config_dict, self.rcParams_dict)
@@ -26,12 +29,13 @@ class Main:
         data_files_dict = {}
         for fl in file_list:
             if "*" in fl:
-                all_file_list = glob.glob(f'{file_dir}/{fl}')
-                all_file_dict = {file.split("/")[-1]:file for file in all_file_list}
+                all_file_list = glob.glob(f"{file_dir}/{fl}")
+                all_file_dict = {file.split("/")[-1]: file for file in all_file_list}
                 data_files_dict = {**data_files_dict, **all_file_dict}
             else:
-                data_files_dict.update({fl : f'{file_dir}/{fl}'})
+                data_files_dict.update({fl: f"{file_dir}/{fl}"})
         return data_files_dict
+
 
 def madplot(config_path="", std_err=True):
     main = Main(path=config_path) if config_path else Main()
@@ -39,7 +43,7 @@ def madplot(config_path="", std_err=True):
     main.init_plot_configure()
 
     files_dict = main.set_data_files()
-    df_dict = {k.split(".")[0]:Plot.read_csv(v) for k,v in files_dict.items()}
+    df_dict = {k.split(".")[0]: Plot.read_csv(v) for k, v in files_dict.items()}
 
     std_err = Plot.std_err_df(df_dict) if std_err else None
 
@@ -51,6 +55,7 @@ def madplot(config_path="", std_err=True):
         # main.plt_class.figure_show()
         main.plt_class.figure_save()
         main.plt_class.remove_axes(subplot_ax)
+
 
 if __name__ == "__main__":
     fire.Fire({"madplot": madplot})
