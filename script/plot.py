@@ -99,16 +99,16 @@ class Plot:
             self, "csv_title"
         ):
             file_name = f"{self.csv_title}.{ext}"
-            file_path = os.path.join(exec_abs_path,output_dir,file_name)
+            file_path = os.path.join(exec_abs_path, output_dir, file_name)
             self.fig.savefig(file_path)
         else:
             file_name = self.figure_config["output"]["title"]["filename"]
             if self.file_count == 0:
                 file_name = f"{file_name}.{ext}"
-                file_path = os.path.join(exec_abs_path,output_dir,file_name)
+                file_path = os.path.join(exec_abs_path, output_dir, file_name)
             else:
                 file_name = f"{file_name}_{self.file_count}.{ext}"
-                file_path = os.path.join(exec_abs_path,output_dir,file_name)
+                file_path = os.path.join(exec_abs_path, output_dir, file_name)
             self.fig.savefig(file_path)
             self.file_count += 1
 
