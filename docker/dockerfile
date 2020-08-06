@@ -1,0 +1,7 @@
+FROM rust:alpine3.11
+
+RUN apk update && \
+  apk add --virtual .build --no-cache musl-dev libressl-dev bash libc6-compat && \
+  cargo install pyoxidizer
+
+RUN pyoxidizer init-config-file macos
