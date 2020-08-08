@@ -4,6 +4,7 @@ import matplotlib.ticker as ticker
 import numpy as np
 import pandas as pd
 import math
+import os.path
 
 
 class Plot:
@@ -90,20 +91,24 @@ class Plot:
     def figure_save(self, path=None):
         output_dir = self.figure_config["output"]["dir"]
         ext = self.figure_config["output"]["extension"]
+        exec_abs_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
         if path is not None:
             self.fig.savefig(path)
         elif self.figure_config["output"]["title"]["specific"] is False and hasattr(
             self, "csv_title"
         ):
-            file_path = f"{output_dir}/{self.csv_title}.{ext}"
+            file_name = f"{self.csv_title}.{ext}"
+            file_path = os.path.join(exec_abs_path, output_dir, file_name)
             self.fig.savefig(file_path)
         else:
             file_name = self.figure_config["output"]["title"]["filename"]
             if self.file_count == 0:
-                file_path = f"{output_dir}/{file_name}.{ext}"
+                file_name = f"{file_name}.{ext}"
+                file_path = os.path.join(exec_abs_path, output_dir, file_name)
             else:
-                file_path = f"{output_dir}/{file_name}_{self.file_count}.{ext}"
+                file_name = f"{file_name}_{self.file_count}.{ext}"
+                file_path = os.path.join(exec_abs_path, output_dir, file_name)
             self.fig.savefig(file_path)
             self.file_count += 1
 
