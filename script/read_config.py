@@ -3,11 +3,12 @@ import os
 import sys
 import yaml
 
+
 class ReadConfig:
     def __init__(self, path):
         try:
             if os.path.isfile(path) is False:
-                raise OSError(2, 'No such file or directory', path)
+                raise OSError(2, "No such file or directory", path)
         except OSError as err:
             print(err)
 
@@ -16,7 +17,7 @@ class ReadConfig:
     def csv_config_read(self):
         with open(self.config_path) as f:
             read_line = csv.reader(f)
-            config_dict = {line[0]:line[1] for line in read_line}
+            config_dict = {line[0]: line[1] for line in read_line}
         return config_dict
 
     def yaml_config_read(self):
@@ -37,8 +38,10 @@ class ReadConfig:
                 read_file[k].pop("rcParams")
         return read_file, rcParams_dict
 
+
 if __name__ == "__main__":
-    config_path = "./config/config.yml"
+    root_path = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+    config_path = os.path.join(ROOT_PATH, "config", "config_template.yml")
     config = ReadConfig(config_path)
     read_yaml = config.yaml_config_read()
     read_yaml, rcParams_dict = ReadConfig.separate_rcParams(read_yaml)
