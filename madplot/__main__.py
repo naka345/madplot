@@ -3,8 +3,8 @@ import os
 import sys
 import glob
 import fire
-from script.plot import Plot
-from script.read_config import ReadConfig
+from .read_config import ReadConfig
+from .plot import Plot
 
 
 class Main:
@@ -61,4 +61,4 @@ def madplot(config_path="", std_err=True):
 
 
 if __name__ == "__main__":
-    fire.Fire({"madplot": madplot})
+    fire.Fire({"plot": madplot})
