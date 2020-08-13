@@ -1,0 +1,10 @@
+# escape=`
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
+
+ENV project_dir c:\Users\naka345\desktop\
+WORKDIR $project_dir
+COPY ./GITLOADFILE $project_dir
+COPY ./win_setup.ps1 $project_dir
+COPY ./requirement.txt $project_dir
+
+ENTRYPOINT powershell -NoProfile -ExecutionPolicy Unrestricted ./win_setup.ps1
