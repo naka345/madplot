@@ -11,5 +11,5 @@ cd madplot
 python -m pyenv install 3.4.10
 python -m pyenv global 3.4.10
 python -m pip install -r requirement.txt
-py2exe
+python -m setup.py py2exe
 dir
