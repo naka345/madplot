@@ -46,18 +46,18 @@ csvファイルをyamlファイルで指定した場所に設置する。
 * 初期値で使う場合
 
 ```
-python main.py madplot
+python -m madplot graph
 ```
 
 * 設定ファイルを個別に指定する場合
 ```
-python main.py madplot --config_path example.yaml
+python -m madplot graph --config_path example.yaml
 ```
 
 * エラーバーの有無
 デフォルトは `True`
 ```
-python main.py madplot --std_err False
+python -m madplot graph --std_err False
 ```
 
 

@@ -3,12 +3,12 @@ import os
 import sys
 import glob
 import fire
-from script.plot import Plot
-from script.read_config import ReadConfig
+from .read_config import ReadConfig
+from .plot import Plot
 
 
 class Main:
-    ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+    ROOT_PATH = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
     DEFAULT_CONFIG_PATH = os.path.join(ROOT_PATH, "config", "config_template.yml")
 
     def __init__(self, path=None):
@@ -40,7 +40,7 @@ class Main:
         return data_files_dict
 
 
-def madplot(config_path="", std_err=True):
+def graph(config_path="", std_err=True):
     main = Main(path=config_path) if config_path else Main()
     main.read_yaml_config()
     main.init_plot_configure()
@@ -61,4 +61,4 @@ def madplot(config_path="", std_err=True):
 
 
 if __name__ == "__main__":
-    fire.Fire({"madplot": madplot})
+    fire.Fire({"graph": graph})
