@@ -45,9 +45,8 @@ class Main:
 
     def df_avg(self, df_dict):
         sum_df = None
-        for i,v in enumerate(df_dict.values()):
+        for i,v in enumerate(df_dict.values(), start=1):
             sum_df = v if sum_df is None else sum_df + v
-        print(sum_df)
         avg_df = sum_df / i
         return avg_df
 
@@ -61,11 +60,9 @@ def graph(config_path="", std_err=True, avg=True):
 
     # errbar
     std_err = Plot.std_err_df(df_dict) if std_err else None
-    print(std_err)
 
     # average DataFrames
     df_dict = main.average_option(df_dict) if avg else df_dict
-    print(df_dict)
 
     for csv_name, df in df_dict.items():
         subplot_ax = main.plt_class.main_df_plot(df.T, std_err_df=std_err)
