@@ -60,6 +60,16 @@ python -m madplot graph --config_path example.yaml
 python -m madplot graph --std_err False
 ```
 
+* 平均値で出力の有無
+デフォルトは `True`
+
+読み込んだファイルの平均値で作図する。
+
+この設定を有効にしている場合、configの `output -> title -> filename` を読み込みそのファイル名で書き出す。
+
+```
+python -m madplot graph --avg False
+```
 
 # 設定ファイル
 config_template.ymlを元に説明。
@@ -116,7 +126,7 @@ axis:
 output:
   dir: output                       # 作図出力先のディレクトリ
   title:
-    specific: False                 # ファイル名の明記の有無。Falseなら読み込んだファイル名を使用。
+    specific: False                 # ファイル名の明記の有無。Falseなら読み込んだファイル名を使用。--avg が Trueの場合は無視する
     filename: same_input_filename   # specificが Trueの場合なら指定したタイトルを使用する。複数出力する場合は連番表記
   extension: png                    # ファイルの拡張子の指定
 ```
