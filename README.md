@@ -94,8 +94,8 @@ axes:
     axes.titlesize: large   # タイトルサイズ。数値で直接指定も可
     axes.titlecolor: auto   # タイトルの配色
   scale:
-    xscale: linear                  # x軸の線形・対数スケールの指定
-    yscale: log                     # y軸の線形・対数スケールの指定
+    xscale: same                    # x軸の線形・対数スケールの指定。sameでfileの表記そのまま。それ以外はaxis scale type参照
+    yscale: log                     # y軸の線形・対数スケールの指定。sameでfileの表記そのまま。それ以外はaxis scale type参照
     ticker: LogFormatterExponent    # 目盛りの表記の指定。matplotlib.ticker参照
 lines:
   rcParams:

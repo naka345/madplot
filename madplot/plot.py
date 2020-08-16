@@ -61,10 +61,24 @@ class Plot:
             self.ax.set_title(self.csv_title)
         else:
             self.ax.set_title(axes_config["title"]["name"])
-        self.ax.set_xscale(axes_config["scale"]["xscale"])
-        self.ax.set_yscale(axes_config["scale"]["yscale"])
-        log_format = eval(f'ticker.{axes_config["scale"]["ticker"]}')()
-        self.ax.get_yaxis().set_major_formatter(log_format)
+
+        self.format_scale(axes_config["scale"])
+
+    def format_scale(self, scale_config):
+        for config_key in scale_config.keys():
+            if not "scale" in config_key:
+                continue
+            if scale_config[config_key] == "same":
+                continue
+
+            scale_type = scale_config[config_key]
+            eval(f"self.ax.set_{config_key}")(scale_type)
+
+            if scale_config[config_key] == "log":
+                formatter = eval(f'ticker.{scale_config["ticker"]}')()
+                eval(f"self.ax.get_{config_key[0]}axis().set_major_formatter")(
+                    formatter
+                )
 
     def set_label_name(self):
         axis_config = self.figure_config["axis"]
