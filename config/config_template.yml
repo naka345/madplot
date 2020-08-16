@@ -20,7 +20,7 @@ axes:
     axes.titlesize: large
     axes.titlecolor: auto
   scale:
-    xscale: linear
+    xscale: same
     yscale: log
     ticker: LogFormatterExponent
 lines:
