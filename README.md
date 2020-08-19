@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/naka345/madplot.svg?branch=pytest)](https://travis-ci.com/naka345/madplot)
+
 # madplot
 yaml形式のファイルを読み込んでmatplotlibで作図するための自作スクリプト。
 
