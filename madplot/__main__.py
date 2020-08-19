@@ -50,7 +50,7 @@ class Main:
         avg_df = sum_df / i
         return avg_df
 
-def graph(config_path="", std_err=True, avg=True):
+def graph(config_path="", errbar=None, ddof=1, avg=True):
     main = Main(path=config_path) if config_path else Main()
     main.read_yaml_config()
     main.init_plot_configure()
@@ -59,13 +59,13 @@ def graph(config_path="", std_err=True, avg=True):
     df_dict = {k.split(".")[0]: Plot.read_csv(v) for k, v in files_dict.items()}
 
     # errbar
-    std_err = Plot.std_err_df(df_dict) if std_err else None
+    errbar = None if errbar is None else Plot.std_err_df(df_dict, errbar, ddof)
 
     # average DataFrames
     df_dict = main.average_option(df_dict) if avg else df_dict
 
     for csv_name, df in df_dict.items():
-        subplot_ax = main.plt_class.main_df_plot(df.T, std_err_df=std_err)
+        subplot_ax = main.plt_class.main_df_plot(df.T, std_err_df=errbar)
         main.plt_class.set_axes_config(title=csv_name)
         main.plt_class.set_label_name()
 
