@@ -56,6 +56,7 @@ python -m madplot graph --config_path example.yaml
 
 * エラーバーの有無
 デフォルトは --errbar `None`, --ddof(自由度) `1`
+
 errbarは標準偏差`std`と標準誤差`sem`の二種類を選択できる
 ```
 # 標準偏差の有効化 (自由度n-1)
