@@ -17,13 +17,13 @@ branches:
     - pytest
 jobs:
   include:
-    - name: "Python 3.8.5 on Xenial Linux"
+    - name: "Python 3.8.0 on Xenial Linux"
       python: 3.8
     - name: "Python on macOS"
       os: osx
       osx_image: xcode11.6
       language: shell       # 'language: python' is an error on Travis CI macOS
-    - name: "Python 3.8.5 on Windows"
+    - name: "Python 3.8.0 on Windows"
       os: windows
       language: shell
       before_install:
