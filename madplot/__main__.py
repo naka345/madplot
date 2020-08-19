@@ -41,14 +41,15 @@ class Main:
 
     def average_option(self, df_dict):
         avg_df = self.df_avg(df_dict)
-        return  {self.read_config_dict["output"]["title"]["filename"] : avg_df}
+        return {self.read_config_dict["output"]["title"]["filename"]: avg_df}
 
     def df_avg(self, df_dict):
         sum_df = None
-        for i,v in enumerate(df_dict.values(), start=1):
+        for i, v in enumerate(df_dict.values(), start=1):
             sum_df = v if sum_df is None else sum_df + v
         avg_df = sum_df / i
         return avg_df
+
 
 def graph(config_path="", errbar=None, ddof=1, avg=True):
     main = Main(path=config_path) if config_path else Main()

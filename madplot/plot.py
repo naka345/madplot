@@ -25,7 +25,7 @@ class Plot:
             if mode == "sem":
                 return df.sem(ddof=ddof)
         except Exception as e:
-            raise(f"optional key not exist: **kwargs \n{e}")
+            raise (f"optional key not exist: **kwargs \n{e}")
 
     @staticmethod
     def std_err_df(df_dict, mode="std", ddof=1):
