@@ -18,7 +18,17 @@ class Plot:
         return pd.read_csv(path, header=0, index_col=0)
 
     @staticmethod
-    def std_err_df(df_dict):
+    def deviation_wrapper(df, mode="std", ddof=1):
+        try:
+            if mode == "std":
+                return df.std(ddof=ddof)
+            if mode == "sem":
+                return df.sem(ddof=ddof)
+        except Exception as e:
+            raise (f"optional key not exist: **kwargs \n{e}")
+
+    @staticmethod
+    def std_err_df(df_dict, mode="std", ddof=1):
         df_list = [df for df in df_dict.values()]
         append_dict = {index: {} for index, df in df_list[0].iterrows()}
 
@@ -31,7 +41,7 @@ class Plot:
             for index, index_series_list in append_dict.items()
         }
         std_err_dict = {
-            key: (concat_df.std(ddof=False) / math.sqrt(len(concat_df)))
+            key: Plot.deviation_wrapper(concat_df, mode, ddof)
             for key, concat_df in key_concat.items()
         }
         std_err_df = pd.DataFrame(std_err_dict)
@@ -61,10 +71,24 @@ class Plot:
             self.ax.set_title(self.csv_title)
         else:
             self.ax.set_title(axes_config["title"]["name"])
-        self.ax.set_xscale(axes_config["scale"]["xscale"])
-        self.ax.set_yscale(axes_config["scale"]["yscale"])
-        log_format = eval(f'ticker.{axes_config["scale"]["ticker"]}')()
-        self.ax.get_yaxis().set_major_formatter(log_format)
+
+        self.format_scale(axes_config["scale"])
+
+    def format_scale(self, scale_config):
+        for config_key in scale_config.keys():
+            if not "scale" in config_key:
+                continue
+            if scale_config[config_key] == "same":
+                continue
+
+            scale_type = scale_config[config_key]
+            eval(f"self.ax.set_{config_key}")(scale_type)
+
+            if scale_config[config_key] == "log":
+                formatter = eval(f'ticker.{scale_config["ticker"]}')()
+                eval(f"self.ax.get_{config_key[0]}axis().set_major_formatter")(
+                    formatter
+                )
 
     def set_label_name(self):
         axis_config = self.figure_config["axis"]
