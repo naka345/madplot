@@ -55,11 +55,27 @@ python -m madplot graph --config_path example.yaml
 ```
 
 * エラーバーの有無
-デフォルトは `True`
+デフォルトは --errbar `None`, --ddof(自由度) `1`
+
+errbarは標準偏差`std`と標準誤差`sem`の二種類を選択できる
 ```
-python -m madplot graph --std_err False
+# 標準偏差の有効化 (自由度n-1)
+python -m madplot graph --errbar std
+
+# 標準誤差、自由度nの場合
+python -m madplot graph --errbar sem --ddof 0
 ```
 
+* 平均値で出力の有無
+デフォルトは `True`
+
+読み込んだファイルの平均値で作図する。
+
+この設定を有効にしている場合、configの `output -> title -> filename` を読み込みそのファイル名で書き出す。
+
+```
+python -m madplot graph --avg False
+```
 
 # 設定ファイル
 config_template.ymlを元に説明。
@@ -116,7 +132,7 @@ axis:
 output:
   dir: output                       # 作図出力先のディレクトリ
   title:
-    specific: False                 # ファイル名の明記の有無。Falseなら読み込んだファイル名を使用。
+    specific: False                 # ファイル名の明記の有無。Falseなら読み込んだファイル名を使用。--avg が Trueの場合は無視する
     filename: same_input_filename   # specificが Trueの場合なら指定したタイトルを使用する。複数出力する場合は連番表記
   extension: png                    # ファイルの拡張子の指定
 ```
