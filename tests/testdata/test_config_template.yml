@@ -1,0 +1,12 @@
+datafile:
+  filedir: example_data
+  files: '*.csv'
+figure:
+  rcParams:
+    figure.figsize: 6.4, 4.8
+    figure.dpi: 300
+    figure.edgecolor: white
+  linewidth: 0
+font:
+  rcParams:
+    font.family: Arial

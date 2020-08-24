@@ -1,0 +1,31 @@
+language: python
+python:
+  - "3.8"
+# command to install dependencies
+install:
+  - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
+  - pip install pipenv
+  - pipenv install --dev --skip-lock
+# command to run tests
+script:
+  - pipenv run pytest
+branches:
+  only:
+    - "master"
+    - "/^v\\d\\.\\d\\.\\d/"
+    - develop
+    - pytest
+jobs:
+  include:
+    - name: "Python 3.8.0 on Xenial Linux"
+      python: 3.8
+    - name: "Python on macOS"
+      os: osx
+      osx_image: xcode11.6
+      language: shell       # 'language: python' is an error on Travis CI macOS
+    - name: "Python 3.8.5 on Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install python --version 3.8.5
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
