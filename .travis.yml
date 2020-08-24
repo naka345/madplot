@@ -1,20 +1,41 @@
 language: python
 python:
   - "3.8"
-# command to install dependencies
-install:
-  - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
-  - pip install pipenv
-  - pipenv install --dev --skip-lock
-# command to run tests
-script:
-  - pipenv run pytest
 branches:
   only:
     - "master"
     - "/^v\\d\\.\\d\\.\\d/"
     - develop
     - pytest
+    - pypi_package
+env:
+  global:
+    - TRAVIS_TAG="v0.1.0"
+# command to install dependencies
+install:
+  - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
+  - pip install pipenv
+# command to run tests
+script:
+  - pipenv install --dev --skip-lock
+  - printenv
+  - pipenv run pytest
+  - pipenv run all_black
+before_deploy:
+  - python setup.py bdist_wheel
+  - ls ./dist/
+  - echo $TRAVIS_BRANCH
+deploy:
+  provider: "releases"
+  api_key:
+    secure: "lQ0o4rmijyyGeF+luiU7F//wyyCdMhVldzEfdf+aZqKB3Nsmc9god3lBO5bt51x3QsNimcZaMcxZ9LdZwgRhyFoL+MNlrBn53PiQopT2BLhxClB2/NGv/jLSDM+8+e1PRlOHCn9uQx2sx0BSzr5gZ3t59gFlovNvChtzGxVLLVCDKjUm4+VBfqm7R6QnFyr38Ulx3TF/s+xSrgBjFWe36/Nzj6a6R76OOMCOzuwQCTK7ZhodzvhQ+5ffbpKT18eUFUnn00x/7X3G/Be5UQduwBrY4SpXdpYeWxzXdwIfXaGDPm0BigJxgbyDcqWM6g/fwwOjTlAJupy4TYq0QRThVcd8QaWzCsHQvBTvxnDYduX2Qpe+3xBQ/OGEP6XZWVDL9jHar71DOB6RoNEsurynKLnhcSu8bO8cJ7EFHi+6bhkP8/ux8UxnW0M9Lf+XtI3OvKrYrTLeLvly07MIH1lcd/FCVivFbGg68QiEMULl0vCkTUfeWyzBDCA1g9QSmBqhvBEULOGPycibSGAox1EdvqdztPdShVAjh/UlJ40w7UBd1C+EAidIHeygVlqChIlozEaeXAFrPx+m5UQx8lSueMY+AeygF4FdSMqpt3j7wlS3CRv+MJwFHGKdDotdB1FDLlgenn3hbux2xxWSFrJMqdCgeWZx3/T9UVwpFMb6vhI="
+  file:
+    - "${TRAVIS_TAG}-release.zip"
+    - "${TRAVIS_TAG}-release-bundled.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: "${TRAVIS_REPO_SLUG}"
 jobs:
   include:
     - name: "Python 3.8.0 on Xenial Linux"
