@@ -1,52 +1,49 @@
 language: python
 python:
-  - "3.8"
+- '3.8'
 branches:
   only:
-    - "master"
-    - "/^v\\d\\.\\d\\.\\d/"
-    - develop
-    - pytest
-    - pypi_package
+  - master
+  - "/^v\\d\\.\\d\\.\\d/"
+  - develop
+  - pytest
+  - pypi_package
 env:
   global:
-    - TRAVIS_TAG="v0.1.0"
-# command to install dependencies
+  - TRAVIS_TAG="v0.1.0"
 install:
-  - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
-  - pip install pipenv
-# command to run tests
+- python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
+- pip install pipenv
 script:
-  - pipenv install --dev --skip-lock
-  - printenv
-  - pipenv run pytest
-  - pipenv run all_black
+- pipenv install --dev --skip-lock
+- printenv
+- pipenv run pytest
+- pipenv run all_black
 before_deploy:
-  - python setup.py bdist_wheel
-  - ls ./dist/
-  - echo $TRAVIS_BRANCH
-deploy:
-  provider: "releases"
-  api_key:
-    secure: "lQ0o4rmijyyGeF+luiU7F//wyyCdMhVldzEfdf+aZqKB3Nsmc9god3lBO5bt51x3QsNimcZaMcxZ9LdZwgRhyFoL+MNlrBn53PiQopT2BLhxClB2/NGv/jLSDM+8+e1PRlOHCn9uQx2sx0BSzr5gZ3t59gFlovNvChtzGxVLLVCDKjUm4+VBfqm7R6QnFyr38Ulx3TF/s+xSrgBjFWe36/Nzj6a6R76OOMCOzuwQCTK7ZhodzvhQ+5ffbpKT18eUFUnn00x/7X3G/Be5UQduwBrY4SpXdpYeWxzXdwIfXaGDPm0BigJxgbyDcqWM6g/fwwOjTlAJupy4TYq0QRThVcd8QaWzCsHQvBTvxnDYduX2Qpe+3xBQ/OGEP6XZWVDL9jHar71DOB6RoNEsurynKLnhcSu8bO8cJ7EFHi+6bhkP8/ux8UxnW0M9Lf+XtI3OvKrYrTLeLvly07MIH1lcd/FCVivFbGg68QiEMULl0vCkTUfeWyzBDCA1g9QSmBqhvBEULOGPycibSGAox1EdvqdztPdShVAjh/UlJ40w7UBd1C+EAidIHeygVlqChIlozEaeXAFrPx+m5UQx8lSueMY+AeygF4FdSMqpt3j7wlS3CRv+MJwFHGKdDotdB1FDLlgenn3hbux2xxWSFrJMqdCgeWZx3/T9UVwpFMb6vhI="
-  file:
-    - "${TRAVIS_TAG}-release.zip"
-    - "${TRAVIS_TAG}-release-bundled.zip"
-  skip_cleanup: true
-  on:
-    tags: true
-    repo: "${TRAVIS_REPO_SLUG}"
+- python setup.py bdist_wheel
+- ls ./dist/
+- echo $TRAVIS_BRANCH
 jobs:
   include:
-    - name: "Python 3.8.0 on Xenial Linux"
-      python: 3.8
-    - name: "Python on macOS"
-      os: osx
-      osx_image: xcode11.6
-      language: shell       # 'language: python' is an error on Travis CI macOS
-    - name: "Python 3.8.5 on Windows"
-      os: windows
-      language: shell
-      before_install:
-        - choco install python --version 3.8.5
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+  - name: Python 3.8.0 on Xenial Linux
+    python: 3.8
+  - name: Python on macOS
+    os: osx
+    osx_image: xcode11.6
+    language: shell
+  - name: Python 3.8.5 on Windows
+    os: windows
+    language: shell
+    before_install:
+    - choco install python --version 3.8.5
+    env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+deploy:
+  provider: releases
+  api_key:
+    secure: kVNC7IOgYywuluKziEQ4HW8oe8R+qSY0BnYg6fcq5lps1d/uh52jqXuf/t6eL3cGh5krcRHX6YJVyXoQHmHoaCzARNwfwtDRp0fE1h51Uer83vYsuoIKRqQkVEmahQhwqdPtSJE9AigTSEULnB5uQuYjMeiDKRIq3JEdhpVCrsEo+qQaXOuLRWvAvhXXNFNmMB6t4i0z6ki6S3JxDUj+H0wRB2FQYfInoPx5QnyQFTIRhRmwOQ0OoAIzc1Gr2WsRrTAcpvXB3LYePAJjN3IThrLD/R4rP0QJEGYC+X4y75364T8iRBO4eDI3Dt9oHLFXiFy98hxHxmaFuWzp85VPo/xhP10neqHX9ibtATK4XPmmd5gfIIV5m61ZvlrDQE8p2Wte05f41ChJJW3W9aUBk9rcAiiCB/eQrrEnsHAF3Rk0lfrdMQDqysXJTvQbZyRNPiTKp5GYoU1N1eX60yAeMkbhzvCqXd8LbO+OZmdirKmqq5wkGhUp+Usfc2M6BzQsABZZXBDdmwOzkVu6g4sGpIRO/DVMWiSoo1/feGG9NTUaSmCfPGFvzS6tppMvNlSXqtMRhIQPcogOSFUOLqczzKamiC7+CoOT41vIkFXWJOiXl+Gwx3hYjd2oHXHpWwQbmMPIJyiPdbtNXTNv3K42hdBDMd+CVkmgwPUgdjuxpUw=
+  file_glob: true
+  file: './dist/*.whl'
+  on:
+    repo: naka345/madplot
+    branch: pypi_package
+  skip_cleanup: 'true'
