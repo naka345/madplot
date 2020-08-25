@@ -15,11 +15,12 @@ install:
 - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
 - pip install pipenv
 script:
-- pipenv install --dev --skip-lock
-- printenv
+- pipenv install --dev --skip-lock --system
 - pipenv run pytest
 - pipenv run all_black
 before_deploy:
+- pipenv install --system --deploy
+- printenv
 - python setup.py bdist_wheel
 - ls ./dist/
 - echo $TRAVIS_BRANCH
