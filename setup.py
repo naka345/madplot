@@ -1,8 +1,14 @@
+import os
 import setuptools
 import configparser
 
 with open("README.md", "r", encoding="utf8") as fh:
     long_description = fh.read()
+
+try:
+    version = os.environ["TRAVIS_TAG"]
+except KeyError:
+    version = "v0.1.1" # v0.0.0
 
 config = configparser.ConfigParser()
 pip_file = config.read("Pipfile")
@@ -10,7 +16,7 @@ packages = [package for package in config["packages"]]
 
 setuptools.setup(
     name="madplot",
-    version="0.1.1",
+    version=version,
     install_requires=packages,
     entry_points={
         'console_scripts': [
