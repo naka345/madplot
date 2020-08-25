@@ -19,10 +19,9 @@ script:
 - pipenv run pytest
 - pipenv run all_black
 before_deploy:
-- pipenv --rm
-- pipenv install --system --deploy
+- pipenv install --system --skip-lock
 - printenv
-- python setup.py bdist_wheel
+- pipenv run python setup.py bdist_wheel
 - ls ./dist/
 - echo $TRAVIS_BRANCH
 jobs:
