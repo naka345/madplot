@@ -21,6 +21,8 @@ script:
 before_deploy:
 - pipenv install --system --skip-lock
 - printenv
+- pipenv run python --version
+- pipenv run python3 --version
 - pipenv run python setup.py bdist_wheel
 - ls ./dist/
 - echo $TRAVIS_BRANCH
