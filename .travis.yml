@@ -10,6 +10,7 @@ branches:
   - pypi_package
 env:
   global:
+  - TRAVIS_TAG=(echo $TRAVIS_BRANCH | grep -E "^v[0-9]\\.[0-9]\\.[0-9]")
   - TRAVIS_TAG="v0.1.0"
 install:
 - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
@@ -18,10 +19,6 @@ script:
 - pipenv install --dev --skip-lock --system
 - pipenv run pytest
 - pipenv run all_black
-before_deploy:
-- pipenv install --system --skip-lock
-- printenv
-- pipenv run python setup.py bdist_wheel
 jobs:
   include:
   - name: Python 3.8.0 on Xenial Linux
@@ -36,6 +33,10 @@ jobs:
     before_install:
     - choco install python --version 3.8.5
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+before_deploy:
+- pipenv install --system --skip-lock
+- printenv
+- pipenv run python setup.py bdist_wheel
 deploy:
   provider: releases
   api_key:
@@ -44,5 +45,9 @@ deploy:
   file: './dist/*.whl'
   on:
     repo: naka345/madplot
-    branch: pypi_package
+    branch: develop
   skip_cleanup: 'true'
+after_deploy:
+- pipenv run freeze
+- pipenv run pip install -f ./dist madplot-0.1.0-py3-none-any.whl
+- pipenv run python -m madplot graph
