@@ -44,8 +44,8 @@ deploy:
   file_glob: true
   file: './dist/*.whl'
   on:
-    repo: naka345/madplot
-    branch: develop
+    repo: $TRAVIS_REPO_SLUG
+    branch: $TRAVIS_BRANCH
   skip_cleanup: 'true'
 after_deploy:
 - pipenv run freeze
