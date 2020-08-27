@@ -34,7 +34,7 @@ jobs:
     - choco install python --version 3.8.5
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 before_deploy:
-- $TRAVIS_BRANCH
+- echo $TRAVIS_BRANCH
 - pipenv install --system --skip-lock
 - pipenv run python setup.py bdist_wheel
 deploy:
@@ -44,10 +44,13 @@ deploy:
   file_glob: true
   file: './dist/*.whl'
   on:
-    repo: $TRAVIS_REPO_SLUG
-    branch: $TRAVIS_BRANCH
-  skip_cleanup: 'true'
+    repo: "${TRAVIS_REPO_SLUG}"
+    tags: true
+  draft: true
+  overwrite: true
+  skip_cleanup: true
 after_deploy:
 - pipenv run pip install ./dist/*.whl
 - mkdir output
 - pipenv run python -m madplot graph
+- ls -lsa ./output
