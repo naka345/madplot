@@ -32,11 +32,6 @@ jobs:
 before_deploy:
 - pipenv install --system --skip-lock
 - pipenv run python setup.py bdist_wheel
-- pipenv --rm
-- pipenv run pip install ./dist/*.whl
-- mkdir output
-- pipenv run python -m madplot graph
-- ls -lsa ./output same_input_filename.png
 deploy: 
   - provider: releases
     api_key:
@@ -56,3 +51,9 @@ deploy:
       tags: true
     skip_cleanup: true
     distributions: "sdist bdist_wheel"
+after_deploy: 
+- pipenv run pip install ./dist/*.whl
+- mkdir output
+- pipenv run python -m madplot graph
+- ls -lsa ./output/same_input_filename.png
+
