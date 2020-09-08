@@ -21,9 +21,11 @@ script:
 jobs:
   include:
   - name: Pipenv on Xenial Linux
+    python: 3.8.5
   - name: Pipenv on macOS
+    python: 3.8.5
     os: osx
-    osx_image: xcode11.6
+    osx_image: xcode11.7
     language: shell
   - name: Python 3.8.5 on Windows
     os: windows
@@ -55,16 +57,16 @@ deploy:
       tags: true
     skip_cleanup: true
     distributions: "sdist bdist_wheel"
-  - provider: pypi
-    username: "__token__"
-    password:
-      secure: "BjWiEL3IXQyqIHLOcaRLfu6nCsCpzZqVqVigVYBKpQx0qQ+SPdXSCiJsKQkY6VGWkD8zw/FGe8/IUgmva0XGSgz5Djz15IuCJBvm5U05T8TAtGv6TEvtjiePZQCamEbUwFtaW2YjefiAH4Ac76c+de6HrS9MBOp1+RJy8S/lcEPb3ZAZxbb4Yv+6epCsENf4RZ9JzhWTcuNNeQAOZGmx9XDsWdmtvJgbIhxiH63Sf9sH1MShR1v56CqfhMXk+vjfekCpRxFwnOfF7pJy0sfQIRly+2Ckjc/8DqV5D3PhO8TH2RoA9U9sWKKb4juEwQ3ed2iDqeGneuuWN/vus1462IJ/xS9z9mfomj1L4tGYchA6nZO8eFlO7iuRjmQwB+8X0VTg+9OCzmDT6Kd6OjzSLeh/uwIqbjsjyMnD2wZ5D0h/43K6K7O4zX7RCFCXl1ABbik6HoPKRbnV9VHGx5imhPPWHgELV+1g5HE25hB11NoDH+QVixjuSiV7eET3Dwk+br+/yk0yCOV1KTNejXfDS7RCn61wXp4iwmrx9AlIZEooejjg+b0CNhyM/kaP5KCQ+1zYMgIHmSQlB6t3xsZphpGB72qHdNYIdaIC0VptT2Q1hyRyMoWtDMdzt99GmQWqbQpqBH9iw7i4LaIv69RO5k8SLHdSJWRa1J4wEegNuiE="
-    on:
-      tags: true
-    skip_cleanup: true
-    distributions: "sdist bdist_wheel"
-    server: "https://test.pypi.org/legacy/"
-    skip_existing: true
+#  - provider: pypi
+#    username: "__token__"
+#    password:
+#      secure: "BjWiEL3IXQyqIHLOcaRLfu6nCsCpzZqVqVigVYBKpQx0qQ+SPdXSCiJsKQkY6VGWkD8zw/FGe8/IUgmva0XGSgz5Djz15IuCJBvm5U05T8TAtGv6TEvtjiePZQCamEbUwFtaW2YjefiAH4Ac76c+de6HrS9MBOp1+RJy8S/lcEPb3ZAZxbb4Yv+6epCsENf4RZ9JzhWTcuNNeQAOZGmx9XDsWdmtvJgbIhxiH63Sf9sH1MShR1v56CqfhMXk+vjfekCpRxFwnOfF7pJy0sfQIRly+2Ckjc/8DqV5D3PhO8TH2RoA9U9sWKKb4juEwQ3ed2iDqeGneuuWN/vus1462IJ/xS9z9mfomj1L4tGYchA6nZO8eFlO7iuRjmQwB+8X0VTg+9OCzmDT6Kd6OjzSLeh/uwIqbjsjyMnD2wZ5D0h/43K6K7O4zX7RCFCXl1ABbik6HoPKRbnV9VHGx5imhPPWHgELV+1g5HE25hB11NoDH+QVixjuSiV7eET3Dwk+br+/yk0yCOV1KTNejXfDS7RCn61wXp4iwmrx9AlIZEooejjg+b0CNhyM/kaP5KCQ+1zYMgIHmSQlB6t3xsZphpGB72qHdNYIdaIC0VptT2Q1hyRyMoWtDMdzt99GmQWqbQpqBH9iw7i4LaIv69RO5k8SLHdSJWRa1J4wEegNuiE="
+#    on:
+#      tags: true
+#    skip_cleanup: true
+#    distributions: "sdist bdist_wheel"
+#    server: "https://test.pypi.org/legacy/"
+#    skip_existing: true
 after_deploy: 
 - pipenv --rm
 - pipenv install --skip-lock madplot || pipenv install --skip-lock -i https://test.pypi.org/simple/ madplot || pipenv run pip install ./dist/*.whl
