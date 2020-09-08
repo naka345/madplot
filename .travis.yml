@@ -7,7 +7,10 @@ branches:
   - "/^v\\d\\.\\d\\.\\d/"
   - develop
   - pytest
-  - pypi_package
+  - modify_pypi
+env:
+  global:
+    - test_pypi_repo="https://upload.test.pypi.org/legacy/"
 install:
 - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
 - pip install pipenv
@@ -32,10 +35,23 @@ jobs:
 before_deploy:
 - pipenv install --system --skip-lock
 - pipenv run python setup.py bdist_wheel
+- python --version
+- pip freeze
+- pipenv run pip freeze
 deploy: 
+  - provider: pypi
+    username: "__token__"
+    password:
+      secure: "Cpt1J0AsRsGP5+NhxEkLzOn43HvZwRLjitlvyhkkYfljmjAwU0AAY+egOFLv655HUI2oqyJ9WSe+q2zDVFy1b0V8uyVkn0iMFs37mtso6zfCDo+NZEnH3rfH21jx+7o0EroG7HxI8ehu85FBV1xFPKAzRJ/mmDlXc0fwH5uQpQobx45WHHTezxgvL8wHSTT1m1+wUde6/Yldt3ZV9xBCblYhn9lVDGMLB8VJUgsf1gJxc8utbiEtFED/wAybv3eAd1QtGakVhtFKEXeJm3AifAZDIXsRFO1wcvWr0bbchTozUMEHIrurNXIG8Y6Zrz5Bk4n76Oyz4/8sA4oP9VFcFZyjVU7KGYZ0uxd49rTEqy1yQ7vrhOU8twsDLnuhZ09DGWzcBK/5ZU0F3JLEw9R1Vs/g5MIwvUroidDgc9BP0gmZds1MCkrE7o2dAG0KeHMPwOF1QkyuIZP3JLBYIAQPGlw81oXlc8aACgD4Q0/cCWf+0l+02Uf/60hUiPcu/KzdiA5kI6iJppDIWpJFhKAOXyjLqAYpiO0cQSLZBWLrUSJ27J+e0otZW2AkxruuxjW30J/9ypAoHqsayMNep4gxXQP52AEBzfzaUu4dETcL90BSjglpWZSn1OV46sdHg4YfhoxdWMywFt9BjY8Pwuj7BdWGbdozyiqwinvVJRjNpP8="
+    server: $test_pypi_repo
+    on: 
+      repo: "${TRAVIS_REPO_SLUG}"
+      tags: true
+    skip_cleanup: true
+    distributions: "sdist bdist_wheel"
   - provider: releases
     api_key:
-      secure: kVNC7IOgYywuluKziEQ4HW8oe8R+qSY0BnYg6fcq5lps1d/uh52jqXuf/t6eL3cGh5krcRHX6YJVyXoQHmHoaCzARNwfwtDRp0fE1h51Uer83vYsuoIKRqQkVEmahQhwqdPtSJE9AigTSEULnB5uQuYjMeiDKRIq3JEdhpVCrsEo+qQaXOuLRWvAvhXXNFNmMB6t4i0z6ki6S3JxDUj+H0wRB2FQYfInoPx5QnyQFTIRhRmwOQ0OoAIzc1Gr2WsRrTAcpvXB3LYePAJjN3IThrLD/R4rP0QJEGYC+X4y75364T8iRBO4eDI3Dt9oHLFXiFy98hxHxmaFuWzp85VPo/xhP10neqHX9ibtATK4XPmmd5gfIIV5m61ZvlrDQE8p2Wte05f41ChJJW3W9aUBk9rcAiiCB/eQrrEnsHAF3Rk0lfrdMQDqysXJTvQbZyRNPiTKp5GYoU1N1eX60yAeMkbhzvCqXd8LbO+OZmdirKmqq5wkGhUp+Usfc2M6BzQsABZZXBDdmwOzkVu6g4sGpIRO/DVMWiSoo1/feGG9NTUaSmCfPGFvzS6tppMvNlSXqtMRhIQPcogOSFUOLqczzKamiC7+CoOT41vIkFXWJOiXl+Gwx3hYjd2oHXHpWwQbmMPIJyiPdbtNXTNv3K42hdBDMd+CVkmgwPUgdjuxpUw=
+      - secure: "kVNC7IOgYywuluKziEQ4HW8oe8R+qSY0BnYg6fcq5lps1d/uh52jqXuf/t6eL3cGh5krcRHX6YJVyXoQHmHoaCzARNwfwtDRp0fE1h51Uer83vYsuoIKRqQkVEmahQhwqdPtSJE9AigTSEULnB5uQuYjMeiDKRIq3JEdhpVCrsEo+qQaXOuLRWvAvhXXNFNmMB6t4i0z6ki6S3JxDUj+H0wRB2FQYfInoPx5QnyQFTIRhRmwOQ0OoAIzc1Gr2WsRrTAcpvXB3LYePAJjN3IThrLD/R4rP0QJEGYC+X4y75364T8iRBO4eDI3Dt9oHLFXiFy98hxHxmaFuWzp85VPo/xhP10neqHX9ibtATK4XPmmd5gfIIV5m61ZvlrDQE8p2Wte05f41ChJJW3W9aUBk9rcAiiCB/eQrrEnsHAF3Rk0lfrdMQDqysXJTvQbZyRNPiTKp5GYoU1N1eX60yAeMkbhzvCqXd8LbO+OZmdirKmqq5wkGhUp+Usfc2M6BzQsABZZXBDdmwOzkVu6g4sGpIRO/DVMWiSoo1/feGG9NTUaSmCfPGFvzS6tppMvNlSXqtMRhIQPcogOSFUOLqczzKamiC7+CoOT41vIkFXWJOiXl+Gwx3hYjd2oHXHpWwQbmMPIJyiPdbtNXTNv3K42hdBDMd+CVkmgwPUgdjuxpUw="
     file_glob: true
     file: './dist/*.whl'
     on:
@@ -45,7 +61,7 @@ deploy:
   - provider: pypi
     username: "__token__"
     password:
-      secure: jCGnzvFh6BTPbma9pkJHQhUcCAQ/BimYAFKDXp1H3pgI/QCJOCH+mvlu4GsALpk+Neatb1ZWWIWHZxBpwiQhQgq/V3ZnnYbCD7bDvwU7nZnZhWdff6VhIprBMBoC3+94jxGuQ8+ThzqEXfbZsXl/MlHQ3qVUqZYje/n78Lr3359DzddTIhwX4SSMJ+SADyiD0LSB8eQeb+95oTraVEN5to5PTYGaIwegfg03l/2EpY3s+Psj1djf88a8p146TKbkEfmy2KouDOGDusCkC31KQMzQ7l7OAbuBnbjeEdCk84MOqCXVTjwWQu/UQG915JNXKaQEyU66/Fe8GDQShRrpODyYwBZEOqq8+UIqrLk5hmWGqEOIQqVCxzzk43FsD1v8Fg5dfSRJ/Yox+zbUvYufAtrq1THLUQq/+S64rq9YtwVlSyVEPGMldTjEPU/TqqM0otnd5wNP2NOx8Qa10xrcd8C6spWamL6GuGCh9Ebqv3sGhH8MKiTOTLzIWlGTB4bBbPqTpVTmkvdgDCKID9Ubwx15aXsR9hFglKifuS8Qgy/38KZ/LYdt4ctpj7/HzUP3ly5MhkL0lahl/f5mFVRc4Kn4DekscmPWHbF3HVUp1PtGwIXaAqU5izh2VwQpQ0N+cJcg31XTmU3uVM4bcmNWJv+9l9BUybYQa6xrMvsK2Xw=
+      secure: "OtWD6bsPX1a40mO1nZWoFDH31XhtGuvPAhZNrthS/eVGeepAu7PFx2B87Qgfi8KNpIPY+tfWCahAOOcBxbXGH4w7R0P5VpPBb+aBKE+V23EgaXPe/iE2Yi1rH4r/vPDPwrhNQTctcR4bqQuaZbyncBjKV2DFP+RHNWvRnLNT0FSOOH3GEwJTD3/h8/Z57JcpTm44+XEwIRyq3TXkpi/VD7j1OIqS6tzJJFYUcruPnITqDbJpt1H9Rb9Nok+VB0l80JYTjKQ2bWiRBD14UBx3ZLYyoXljckrpMJDqy6f4ZtTcpWGFYX6lLafNbcUXGNMQ/WWD0p+lqcmGUwCZ82KjP4illI7yZnA5qK56vpaadtys7KNq8GpIv/uB95pkUufb6DKe38L9X+xcV+9brSFNj9VqabrHCuHyOS8VgE7n+qQL9rk+sdrP8pnsh/C6DeNQq7XQPi11A4oW/kOVPlFOmBpmD/bRCBWdBAckicLBdd7xH0GXVSjtft+vIUABC/uMJcH97Il7wTGsBGZphEjoEIOkyClvRWX3+U6WS8WxlPxN/4PN0pHKBRl06hzT5Y+kFQ1D5PYaffTrJb9r37AiLuNHBbC6eu5KbYRIGiyacPNcQMx5cnlFALqm+zVDV94WAg67CAWsS6iIHLZx9wOXhDX1hbFxyQ3laqc5x7J0uH0="
     on:
       repo: "${TRAVIS_REPO_SLUG}"
       tags: true
