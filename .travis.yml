@@ -39,10 +39,9 @@ deploy:
   - provider: pypi
     username: "__token__"
     password:
-      secure: "jHWpfNjNAyFxCZq71ysZUwTxTZJwCOa8Q9n2Bv0d/X/kiq7/CwsTTPjASkiZcekrjE73gUhPVB0d8XxVy4+nGN9RBvDpugygK/HhkjSdgJJ3zlbqnBPbCgbipiMpU6yDNFBgBakjhgQpxUO6CiOeP0Yt03KQ8YI3MFdaMWcotfjxLnl38Un6obMHaDbcvUa/fCyG/36191aPb5b+6qCBwERB23VHZH0RKz6EPOk/mo9OxXTd4re61SWXzGLn/Tg98pa0rpSCkIeGH3GCwO0HFDpHfS1zMvYjLGXrJf9QnfH2l/5zdc6cEXEuXxvQB8r9F8dfTVXqe0kdsRC7cEPKVGV+hzo415d+xOOG9SiY055QLyZQlRl8hn0mRepcC7UU89jKcqIsUZd2jv8xnrex0gvOBpU8WPRVU68jYBUJwu/IiztKSnihXtZGtFYNTZ27/YsNdLTq7pnKn5HqYkEBWAvjUhZnPcLwUwqwWQHhOjYvLbviEVjJ4w79wCg/UFxHFkIjB6Gtai/KDSScS0DS9c2Uwl4MU87K1uGc/7ZU5+cuWtcfemNoYu8ZSYcZbHCCcyt3VWZqYnX+gE8m5Tcyf8+uGYOADuU/6ZIjgWSlBeefPN8yoBDcYGECpHunTr58Q4MST2GK0b/2/yU+plkgro5sX4UP77x6NJ16pv82+HI="
+      secure: "LQWgHVp/4ZngKm5SgUZJRLHEzoY8PzPTAu91lnPK4k+sHsoyiWjuowVq6BAGeswVU655pLH/q8Nb96UEXblXkIB8jPx8Pqdx6JaZ6yrnCJdP4xLVl8+UiwNtGtQajMJopDaGJmEnXkf/D51z1KjVRPsnvOR0tM32cFA9hC4+zs0TdV/LO4C3knqaY/vNwlgiSO4KCrwEbENeDNNGb9Af4aWlCw3/t0Xuw5xq3/QA1fFaSr0JgXv6P3QNSkt8b+mapBhxbWUZ00wUtRnCMrJaQLECFnYyus68jL6VwzzFZNBxRmCg60x3SDDDIRd+hKOMu7+/GfTJdPrmuW//yckit4VVaip0+BZHf0tBkq6nxUgvVttElql5/D1KTp5Bdu0VwAT4Xg1DxH4n4s/7Hl5RY3PSpHSYfPHtGXialD7METJYZxzVSHx0vFq06mi1WB5BppnZJfRLDBF9dk1k8hmtaPjS2skQo06aYzdCNTBjxdxphd7rMXi8ydy0Q9DKtwHlYBizcLd1P/K40hfZQ3nHMORdlaLiVUr6s4tZPtphsjYXnzuVhwOMFx8Tqa9drG4ItyKoTPpSgzgbw6Q0E90num7pQVf5a846PrMF7X5F9uOSOBOuEdFtnmh32EYbU/tiDf/qsQy/vrhbcKSHsIqrfMnyvEF79pmZZyT1mAyBm58="
     server: "https://test.pypi.org/legacy/"
     on: 
-      repo: "${TRAVIS_REPO_SLUG}"
       tags: true
     skip_cleanup: true
     distributions: "sdist bdist_wheel"
@@ -58,13 +57,14 @@ deploy:
   - provider: pypi
     username: "__token__"
     password:
-      secure: "OtWD6bsPX1a40mO1nZWoFDH31XhtGuvPAhZNrthS/eVGeepAu7PFx2B87Qgfi8KNpIPY+tfWCahAOOcBxbXGH4w7R0P5VpPBb+aBKE+V23EgaXPe/iE2Yi1rH4r/vPDPwrhNQTctcR4bqQuaZbyncBjKV2DFP+RHNWvRnLNT0FSOOH3GEwJTD3/h8/Z57JcpTm44+XEwIRyq3TXkpi/VD7j1OIqS6tzJJFYUcruPnITqDbJpt1H9Rb9Nok+VB0l80JYTjKQ2bWiRBD14UBx3ZLYyoXljckrpMJDqy6f4ZtTcpWGFYX6lLafNbcUXGNMQ/WWD0p+lqcmGUwCZ82KjP4illI7yZnA5qK56vpaadtys7KNq8GpIv/uB95pkUufb6DKe38L9X+xcV+9brSFNj9VqabrHCuHyOS8VgE7n+qQL9rk+sdrP8pnsh/C6DeNQq7XQPi11A4oW/kOVPlFOmBpmD/bRCBWdBAckicLBdd7xH0GXVSjtft+vIUABC/uMJcH97Il7wTGsBGZphEjoEIOkyClvRWX3+U6WS8WxlPxN/4PN0pHKBRl06hzT5Y+kFQ1D5PYaffTrJb9r37AiLuNHBbC6eu5KbYRIGiyacPNcQMx5cnlFALqm+zVDV94WAg67CAWsS6iIHLZx9wOXhDX1hbFxyQ3laqc5x7J0uH0="
+      secure: "LQWgHVp/4ZngKm5SgUZJRLHEzoY8PzPTAu91lnPK4k+sHsoyiWjuowVq6BAGeswVU655pLH/q8Nb96UEXblXkIB8jPx8Pqdx6JaZ6yrnCJdP4xLVl8+UiwNtGtQajMJopDaGJmEnXkf/D51z1KjVRPsnvOR0tM32cFA9hC4+zs0TdV/LO4C3knqaY/vNwlgiSO4KCrwEbENeDNNGb9Af4aWlCw3/t0Xuw5xq3/QA1fFaSr0JgXv6P3QNSkt8b+mapBhxbWUZ00wUtRnCMrJaQLECFnYyus68jL6VwzzFZNBxRmCg60x3SDDDIRd+hKOMu7+/GfTJdPrmuW//yckit4VVaip0+BZHf0tBkq6nxUgvVttElql5/D1KTp5Bdu0VwAT4Xg1DxH4n4s/7Hl5RY3PSpHSYfPHtGXialD7METJYZxzVSHx0vFq06mi1WB5BppnZJfRLDBF9dk1k8hmtaPjS2skQo06aYzdCNTBjxdxphd7rMXi8ydy0Q9DKtwHlYBizcLd1P/K40hfZQ3nHMORdlaLiVUr6s4tZPtphsjYXnzuVhwOMFx8Tqa9drG4ItyKoTPpSgzgbw6Q0E90num7pQVf5a846PrMF7X5F9uOSOBOuEdFtnmh32EYbU/tiDf/qsQy/vrhbcKSHsIqrfMnyvEF79pmZZyT1mAyBm58="
     on:
       repo: "${TRAVIS_REPO_SLUG}"
       tags: true
     skip_cleanup: true
     distributions: "sdist bdist_wheel"
-    server: https://test.pypi.org/index
+    server: "https://test.pypi.org/legacy/"
+    skip_existing: true
 after_deploy: 
 - pipenv run pip install ./dist/*.whl
 - mkdir output
