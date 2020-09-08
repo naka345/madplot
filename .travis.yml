@@ -8,9 +8,6 @@ branches:
   - develop
   - pytest
   - modify_pypi
-env:
-  global:
-    - test_pypi_repo="https://upload.test.pypi.org/legacy/"
 install:
 - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
 - pip install pipenv
@@ -42,8 +39,8 @@ deploy:
   - provider: pypi
     username: "__token__"
     password:
-      secure: "Cpt1J0AsRsGP5+NhxEkLzOn43HvZwRLjitlvyhkkYfljmjAwU0AAY+egOFLv655HUI2oqyJ9WSe+q2zDVFy1b0V8uyVkn0iMFs37mtso6zfCDo+NZEnH3rfH21jx+7o0EroG7HxI8ehu85FBV1xFPKAzRJ/mmDlXc0fwH5uQpQobx45WHHTezxgvL8wHSTT1m1+wUde6/Yldt3ZV9xBCblYhn9lVDGMLB8VJUgsf1gJxc8utbiEtFED/wAybv3eAd1QtGakVhtFKEXeJm3AifAZDIXsRFO1wcvWr0bbchTozUMEHIrurNXIG8Y6Zrz5Bk4n76Oyz4/8sA4oP9VFcFZyjVU7KGYZ0uxd49rTEqy1yQ7vrhOU8twsDLnuhZ09DGWzcBK/5ZU0F3JLEw9R1Vs/g5MIwvUroidDgc9BP0gmZds1MCkrE7o2dAG0KeHMPwOF1QkyuIZP3JLBYIAQPGlw81oXlc8aACgD4Q0/cCWf+0l+02Uf/60hUiPcu/KzdiA5kI6iJppDIWpJFhKAOXyjLqAYpiO0cQSLZBWLrUSJ27J+e0otZW2AkxruuxjW30J/9ypAoHqsayMNep4gxXQP52AEBzfzaUu4dETcL90BSjglpWZSn1OV46sdHg4YfhoxdWMywFt9BjY8Pwuj7BdWGbdozyiqwinvVJRjNpP8="
-    server: $test_pypi_repo
+      secure: "jHWpfNjNAyFxCZq71ysZUwTxTZJwCOa8Q9n2Bv0d/X/kiq7/CwsTTPjASkiZcekrjE73gUhPVB0d8XxVy4+nGN9RBvDpugygK/HhkjSdgJJ3zlbqnBPbCgbipiMpU6yDNFBgBakjhgQpxUO6CiOeP0Yt03KQ8YI3MFdaMWcotfjxLnl38Un6obMHaDbcvUa/fCyG/36191aPb5b+6qCBwERB23VHZH0RKz6EPOk/mo9OxXTd4re61SWXzGLn/Tg98pa0rpSCkIeGH3GCwO0HFDpHfS1zMvYjLGXrJf9QnfH2l/5zdc6cEXEuXxvQB8r9F8dfTVXqe0kdsRC7cEPKVGV+hzo415d+xOOG9SiY055QLyZQlRl8hn0mRepcC7UU89jKcqIsUZd2jv8xnrex0gvOBpU8WPRVU68jYBUJwu/IiztKSnihXtZGtFYNTZ27/YsNdLTq7pnKn5HqYkEBWAvjUhZnPcLwUwqwWQHhOjYvLbviEVjJ4w79wCg/UFxHFkIjB6Gtai/KDSScS0DS9c2Uwl4MU87K1uGc/7ZU5+cuWtcfemNoYu8ZSYcZbHCCcyt3VWZqYnX+gE8m5Tcyf8+uGYOADuU/6ZIjgWSlBeefPN8yoBDcYGECpHunTr58Q4MST2GK0b/2/yU+plkgro5sX4UP77x6NJ16pv82+HI="
+    server: "https://test.pypi.org/legacy/"
     on: 
       repo: "${TRAVIS_REPO_SLUG}"
       tags: true
