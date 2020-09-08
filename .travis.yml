@@ -56,6 +56,7 @@ deploy:
     on: 
       tags: true
     skip_cleanup: true
+    skip_existing: true
     distributions: "sdist bdist_wheel"
 #  - provider: pypi
 #    username: "__token__"
@@ -70,8 +71,4 @@ deploy:
 after_deploy: 
 - pipenv --rm
 - pipenv install --skip-lock madplot || pipenv install --skip-lock -i https://test.pypi.org/simple/ madplot || pipenv run pip install ./dist/*.whl
-- mkdir -p test_deploy/output && cd test_deploy
-- pipenv run python -m madplot graph
-- ls -lsa ./output/same_input_filename.png
-- cd -
-- rm -rf ./test_deploy
+- python -c "import madplot"
