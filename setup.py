@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf8") as fh:
 try:
     version = os.environ["TRAVIS_TAG"]
 except KeyError:
-    version = "v0.0.0"
+    version = None
 
 config = configparser.ConfigParser()
 pip_file = config.read("Pipfile")

@@ -7,21 +7,25 @@ branches:
   - "/^v\\d\\.\\d\\.\\d/"
   - develop
   - pytest
-  - pypi_package
+  - modify_pypi
 install:
 - python3 -m pip install --upgrade pip || python -m pip install --upgrade pip
 - pip install pipenv
+env:
+  global:
+    PIPENV_IGNORE_VIRTUALENVS=1
 script:
-- pipenv install --dev --skip-lock --system
+- pipenv install --dev --skip-lock
 - pipenv run pytest
 - pipenv run all_black --check
 jobs:
   include:
-  - name: Python 3.8.0 on Xenial Linux
-    python: 3.8
-  - name: Python on macOS
+  - name: Pipenv on Xenial Linux
+    python: 3.8.5
+  - name: Pipenv on macOS
+    python: 3.8.5
     os: osx
-    osx_image: xcode11.6
+    osx_image: xcode11.7
     language: shell
   - name: Python 3.8.5 on Windows
     os: windows
@@ -30,29 +34,41 @@ jobs:
     - choco install python --version 3.8.5
     env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 before_deploy:
-- pipenv install --system --skip-lock
-- pipenv run python setup.py bdist_wheel
 - pipenv --rm
-- pipenv run pip install ./dist/*.whl
-- mkdir output
-- pipenv run python -m madplot graph
-- ls -lsa ./output same_input_filename.png
+- pipenv install --skip-lock
+- pipenv run python setup.py bdist_wheel
 deploy: 
   - provider: releases
     api_key:
-      secure: kVNC7IOgYywuluKziEQ4HW8oe8R+qSY0BnYg6fcq5lps1d/uh52jqXuf/t6eL3cGh5krcRHX6YJVyXoQHmHoaCzARNwfwtDRp0fE1h51Uer83vYsuoIKRqQkVEmahQhwqdPtSJE9AigTSEULnB5uQuYjMeiDKRIq3JEdhpVCrsEo+qQaXOuLRWvAvhXXNFNmMB6t4i0z6ki6S3JxDUj+H0wRB2FQYfInoPx5QnyQFTIRhRmwOQ0OoAIzc1Gr2WsRrTAcpvXB3LYePAJjN3IThrLD/R4rP0QJEGYC+X4y75364T8iRBO4eDI3Dt9oHLFXiFy98hxHxmaFuWzp85VPo/xhP10neqHX9ibtATK4XPmmd5gfIIV5m61ZvlrDQE8p2Wte05f41ChJJW3W9aUBk9rcAiiCB/eQrrEnsHAF3Rk0lfrdMQDqysXJTvQbZyRNPiTKp5GYoU1N1eX60yAeMkbhzvCqXd8LbO+OZmdirKmqq5wkGhUp+Usfc2M6BzQsABZZXBDdmwOzkVu6g4sGpIRO/DVMWiSoo1/feGG9NTUaSmCfPGFvzS6tppMvNlSXqtMRhIQPcogOSFUOLqczzKamiC7+CoOT41vIkFXWJOiXl+Gwx3hYjd2oHXHpWwQbmMPIJyiPdbtNXTNv3K42hdBDMd+CVkmgwPUgdjuxpUw=
+      - secure: "kVNC7IOgYywuluKziEQ4HW8oe8R+qSY0BnYg6fcq5lps1d/uh52jqXuf/t6eL3cGh5krcRHX6YJVyXoQHmHoaCzARNwfwtDRp0fE1h51Uer83vYsuoIKRqQkVEmahQhwqdPtSJE9AigTSEULnB5uQuYjMeiDKRIq3JEdhpVCrsEo+qQaXOuLRWvAvhXXNFNmMB6t4i0z6ki6S3JxDUj+H0wRB2FQYfInoPx5QnyQFTIRhRmwOQ0OoAIzc1Gr2WsRrTAcpvXB3LYePAJjN3IThrLD/R4rP0QJEGYC+X4y75364T8iRBO4eDI3Dt9oHLFXiFy98hxHxmaFuWzp85VPo/xhP10neqHX9ibtATK4XPmmd5gfIIV5m61ZvlrDQE8p2Wte05f41ChJJW3W9aUBk9rcAiiCB/eQrrEnsHAF3Rk0lfrdMQDqysXJTvQbZyRNPiTKp5GYoU1N1eX60yAeMkbhzvCqXd8LbO+OZmdirKmqq5wkGhUp+Usfc2M6BzQsABZZXBDdmwOzkVu6g4sGpIRO/DVMWiSoo1/feGG9NTUaSmCfPGFvzS6tppMvNlSXqtMRhIQPcogOSFUOLqczzKamiC7+CoOT41vIkFXWJOiXl+Gwx3hYjd2oHXHpWwQbmMPIJyiPdbtNXTNv3K42hdBDMd+CVkmgwPUgdjuxpUw="
     file_glob: true
     file: './dist/*.whl'
     on:
       repo: "${TRAVIS_REPO_SLUG}"
       tags: true
     skip_cleanup: true
+    skip_existing: true
   - provider: pypi
     username: "__token__"
     password:
-      secure: jCGnzvFh6BTPbma9pkJHQhUcCAQ/BimYAFKDXp1H3pgI/QCJOCH+mvlu4GsALpk+Neatb1ZWWIWHZxBpwiQhQgq/V3ZnnYbCD7bDvwU7nZnZhWdff6VhIprBMBoC3+94jxGuQ8+ThzqEXfbZsXl/MlHQ3qVUqZYje/n78Lr3359DzddTIhwX4SSMJ+SADyiD0LSB8eQeb+95oTraVEN5to5PTYGaIwegfg03l/2EpY3s+Psj1djf88a8p146TKbkEfmy2KouDOGDusCkC31KQMzQ7l7OAbuBnbjeEdCk84MOqCXVTjwWQu/UQG915JNXKaQEyU66/Fe8GDQShRrpODyYwBZEOqq8+UIqrLk5hmWGqEOIQqVCxzzk43FsD1v8Fg5dfSRJ/Yox+zbUvYufAtrq1THLUQq/+S64rq9YtwVlSyVEPGMldTjEPU/TqqM0otnd5wNP2NOx8Qa10xrcd8C6spWamL6GuGCh9Ebqv3sGhH8MKiTOTLzIWlGTB4bBbPqTpVTmkvdgDCKID9Ubwx15aXsR9hFglKifuS8Qgy/38KZ/LYdt4ctpj7/HzUP3ly5MhkL0lahl/f5mFVRc4Kn4DekscmPWHbF3HVUp1PtGwIXaAqU5izh2VwQpQ0N+cJcg31XTmU3uVM4bcmNWJv+9l9BUybYQa6xrMvsK2Xw=
-    on:
-      repo: "${TRAVIS_REPO_SLUG}"
+      secure: "LQWgHVp/4ZngKm5SgUZJRLHEzoY8PzPTAu91lnPK4k+sHsoyiWjuowVq6BAGeswVU655pLH/q8Nb96UEXblXkIB8jPx8Pqdx6JaZ6yrnCJdP4xLVl8+UiwNtGtQajMJopDaGJmEnXkf/D51z1KjVRPsnvOR0tM32cFA9hC4+zs0TdV/LO4C3knqaY/vNwlgiSO4KCrwEbENeDNNGb9Af4aWlCw3/t0Xuw5xq3/QA1fFaSr0JgXv6P3QNSkt8b+mapBhxbWUZ00wUtRnCMrJaQLECFnYyus68jL6VwzzFZNBxRmCg60x3SDDDIRd+hKOMu7+/GfTJdPrmuW//yckit4VVaip0+BZHf0tBkq6nxUgvVttElql5/D1KTp5Bdu0VwAT4Xg1DxH4n4s/7Hl5RY3PSpHSYfPHtGXialD7METJYZxzVSHx0vFq06mi1WB5BppnZJfRLDBF9dk1k8hmtaPjS2skQo06aYzdCNTBjxdxphd7rMXi8ydy0Q9DKtwHlYBizcLd1P/K40hfZQ3nHMORdlaLiVUr6s4tZPtphsjYXnzuVhwOMFx8Tqa9drG4ItyKoTPpSgzgbw6Q0E90num7pQVf5a846PrMF7X5F9uOSOBOuEdFtnmh32EYbU/tiDf/qsQy/vrhbcKSHsIqrfMnyvEF79pmZZyT1mAyBm58="
+    server: "https://test.pypi.org/legacy/"
+    on: 
       tags: true
     skip_cleanup: true
+    skip_existing: true
     distributions: "sdist bdist_wheel"
+#  - provider: pypi
+#    username: "__token__"
+#    password:
+#      secure: "BjWiEL3IXQyqIHLOcaRLfu6nCsCpzZqVqVigVYBKpQx0qQ+SPdXSCiJsKQkY6VGWkD8zw/FGe8/IUgmva0XGSgz5Djz15IuCJBvm5U05T8TAtGv6TEvtjiePZQCamEbUwFtaW2YjefiAH4Ac76c+de6HrS9MBOp1+RJy8S/lcEPb3ZAZxbb4Yv+6epCsENf4RZ9JzhWTcuNNeQAOZGmx9XDsWdmtvJgbIhxiH63Sf9sH1MShR1v56CqfhMXk+vjfekCpRxFwnOfF7pJy0sfQIRly+2Ckjc/8DqV5D3PhO8TH2RoA9U9sWKKb4juEwQ3ed2iDqeGneuuWN/vus1462IJ/xS9z9mfomj1L4tGYchA6nZO8eFlO7iuRjmQwB+8X0VTg+9OCzmDT6Kd6OjzSLeh/uwIqbjsjyMnD2wZ5D0h/43K6K7O4zX7RCFCXl1ABbik6HoPKRbnV9VHGx5imhPPWHgELV+1g5HE25hB11NoDH+QVixjuSiV7eET3Dwk+br+/yk0yCOV1KTNejXfDS7RCn61wXp4iwmrx9AlIZEooejjg+b0CNhyM/kaP5KCQ+1zYMgIHmSQlB6t3xsZphpGB72qHdNYIdaIC0VptT2Q1hyRyMoWtDMdzt99GmQWqbQpqBH9iw7i4LaIv69RO5k8SLHdSJWRa1J4wEegNuiE="
+#    on:
+#      tags: true
+#    skip_cleanup: true
+#    distributions: "sdist bdist_wheel"
+#    server: "https://test.pypi.org/legacy/"
+#    skip_existing: true
+after_deploy: 
+- pipenv --rm
+- pipenv install --skip-lock madplot || pipenv install --skip-lock -i https://test.pypi.org/simple/ madplot || pipenv run pip install ./dist/*.whl
+- python -c "import madplot"
